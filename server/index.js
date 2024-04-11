@@ -2,7 +2,7 @@
 const app = require("./src/app");
 
 // Server port to listen
-const port = 3310;
+const port = 3330;
 
 // Start the server and listen on the defined port
 app

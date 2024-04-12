@@ -3,13 +3,16 @@
     {
       "name": "Salle #1",
       "description": "Salle #1",
+      "roomPhoto" : "/static/room-0.jpeg",
       "capacity": 5,
       "equipements": [
         {
-          "name": "TV"
+          "name": "TV",
+          "imgSrc": "/static/tv.png"
         },
         {
-          "name": "Retro Projecteur"
+          "name": "Retro Projecteur",
+          "imgSrc": "/static/projector.png"
         }
       ],
       "createdAt": "2016-12-07T12:39:29.812Z",
@@ -18,10 +21,12 @@
     {
       "name": "Salle #2",
       "description": "Salle #2",
+      "roomPhoto" : "/static/room-1.jpeg",
       "capacity": 10,
       "equipements": [
         {
-          "name": "Retro Projecteur"
+          "name": "Retro Projecteur",
+          "imgSrc": "/static/projector.png"
         }
       ],
       "createdAt": "2016-12-07T12:39:55.384Z",
@@ -30,6 +35,7 @@
     {
       "name": "Salle Okjsdkso",
       "description": "Salle Okjsdkso",
+      "roomPhoto" : "/static/room-2.jpeg",
       "capacity": 11,
       "equipements": [],
       "createdAt": "2016-12-07T14:15:55.733Z",
@@ -38,13 +44,16 @@
     {
       "name": "Salle de ouf",
       "description": "Salle de ouf",
+      "roomPhoto" : "/static/room-3.jpeg",
       "capacity": 10,
       "equipements": [
         {
-          "name": "TV"
+          "name": "TV",
+          "imgSrc": "/static/tv.png"
         },
         {
-          "name": "Retro Projecteur"
+          "name": "Retro Projecteur",
+          "imgSrc": "/static/projector.png"
         }
       ],
       "createdAt": "2016-12-09T16:45:34.419Z",
@@ -53,14 +62,16 @@
     {
       "name": "Salle nulle",
       "description": "Salle nulle",
+      "roomPhoto" : "/static/room-4.jpeg",
       "capacity": 26,
       "equipements": [
         {
-          "name": "TV"
+          "name": "TV",
+          "imgSrc": "/static/tv.png"
         },
         {
-          "name": "Retro Projecteur"
-        }
+          "name": "Retro Projecteur",
+          "imgSrc": "/static/tv.png"        }
       ],
       "createdAt": "2016-12-09T16:45:49.096Z",
       "updatedAt": "2016-12-09T16:45:49.096Z"

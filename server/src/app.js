@@ -4,21 +4,14 @@ const path = require("path");
 const fs = require("fs");
 const app = express();
 
+/* ************* CORS configuration ************* */
+
 /* ************* Request parsing in json format ************* */
 app.use(express.json());
-
 /* ************************************************ */
 
-/* ************* Routes configuraiton ************* */
-
-// Import the API routes from router module
-const router = require("./router");
-// Mount the API routes under the "/api endpoint"
-app.use("/api", router);
-
-/* ************************************************ */
-
-/* ************* CORS configuration ************* */
+const roomsImagesPath = path.join(__dirname, "../public/images/rooms");
+app.use("/static", express.static(roomsImagesPath));
 
 // CORS configuration for only client connexion with available HTTP methods GET, POST, DELET.
 app.use(
@@ -31,4 +24,15 @@ app.use(
 );
 
 /* ************************************************ */
+
+/* ************* Routes configuraiton ************* */
+
+// Import the API routes from router module
+const router = require("./router");
+const exp = require("constants");
+// Mount the API routes under the "/api endpoint"
+app.use("/api", router);
+
+/* ************************************************ */
+
 module.exports = app;

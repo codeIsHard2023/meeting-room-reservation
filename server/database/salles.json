@@ -3,70 +3,76 @@
     {
       "name": "Salle #1",
       "description": "Salle #1",
+      "roomPhoto" : "/static/room-0.jpeg",
       "capacity": 5,
       "equipements": [
         {
-          "name": "TV"
+          "name": "TV",
+          "imgSrc": "/static/tv.png"
         },
         {
-          "name": "Retro Projecteur"
+          "name": "Retro Projecteur",
+          "imgSrc": "/static/projector.png"
         }
       ],
-      "roomPhoto" : "/static/room-0.jpeg",
       "createdAt": "2016-12-07T12:39:29.812Z",
       "updatedAt": "2016-12-08T17:31:39.489Z"
     },
     {
       "name": "Salle #2",
       "description": "Salle #2",
+      "roomPhoto" : "/static/room-1.jpeg",
       "capacity": 10,
       "equipements": [
         {
-          "name": "Retro Projecteur"
+          "name": "Retro Projecteur",
+          "imgSrc": "/static/projector.png"
         }
       ],
-      "roomPhoto" : "/static/room-1.jpeg",
       "createdAt": "2016-12-07T12:39:55.384Z",
       "updatedAt": "2016-12-07T13:33:37.184Z"
     },
     {
       "name": "Salle Okjsdkso",
       "description": "Salle Okjsdkso",
+      "roomPhoto" : "/static/room-2.jpeg",
       "capacity": 11,
       "equipements": [],
-      "roomPhoto" : "/static/room-2.jpeg",
       "createdAt": "2016-12-07T14:15:55.733Z",
       "updatedAt": "2016-12-09T16:45:19.025Z"
     },
     {
       "name": "Salle de ouf",
       "description": "Salle de ouf",
+      "roomPhoto" : "/static/room-3.jpeg",
       "capacity": 10,
       "equipements": [
         {
-          "name": "TV"
+          "name": "TV",
+          "imgSrc": "/static/tv.png"
         },
         {
-          "name": "Retro Projecteur"
+          "name": "Retro Projecteur",
+          "imgSrc": "/static/projector.png"
         }
       ],
-      "roomPhoto" : "/static/room-3.jpeg",
       "createdAt": "2016-12-09T16:45:34.419Z",
       "updatedAt": "2016-12-09T16:45:34.419Z"
     },
     {
       "name": "Salle nulle",
       "description": "Salle nulle",
+      "roomPhoto" : "/static/room-4.jpeg",
       "capacity": 26,
       "equipements": [
         {
-          "name": "TV"
+          "name": "TV",
+          "imgSrc": "/static/tv.png"
         },
         {
-          "name": "Retro Projecteur"
-        }
+          "name": "Retro Projecteur",
+          "imgSrc": "/static/tv.png"        }
       ],
-      "roomPhoto" : "/static/room-4.jpeg",
       "createdAt": "2016-12-09T16:45:49.096Z",
       "updatedAt": "2016-12-09T16:45:49.096Z"
     }

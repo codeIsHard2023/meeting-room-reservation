@@ -10,7 +10,8 @@ const app = express();
 app.use(express.json());
 /* ************************************************ */
 
-app.use("/static", express.static(`${__dirname}/rooms`));
+const roomsImagesPath = path.join(__dirname, "../public/images/rooms");
+app.use("/static", express.static(roomsImagesPath));
 
 // CORS configuration for only client connexion with available HTTP methods GET, POST, DELET.
 app.use(
@@ -28,6 +29,7 @@ app.use(
 
 // Import the API routes from router module
 const router = require("./router");
+const exp = require("constants");
 // Mount the API routes under the "/api endpoint"
 app.use("/api", router);
 

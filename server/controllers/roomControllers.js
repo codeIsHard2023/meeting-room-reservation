@@ -30,6 +30,34 @@ const readReservations = (req, res, next) => {
   }
 };
 
+// Here we get reservations for specific room and date
+const findReservations = (req, res, next) => {
+  const { room, date } = req.params;
+
+  // keep this date format on client side
+  // const selectedDate = "2024-05-22";
+
+  // keeping date transformation if need further :
+  // const year = selectedDate.getFullYear();
+  // const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
+  // const day = String(selectedDate.getDate()).padStart(2, "0");
+  // const date = `${year}-${month}-${day}`;
+  try {
+    const roomReservations = reservations.reservations.filter((reservation) => {
+      return reservation.name === room && reservation.date === date;
+    });
+
+    if (roomReservations.length === 0) {
+      res.status(404).json({ message: "Data not found" });
+    } else {
+      res.status(200).json(roomReservations);
+    }
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
 // Adding reservation into reservations.json
 const add = (req, res, next) => {
   // Here data comes from client
@@ -92,4 +120,4 @@ const add = (req, res, next) => {
   });
 };
 
-module.exports = { testBrowse, read, readReservations, add };
+module.exports = { testBrowse, read, readReservations, findReservations, add };

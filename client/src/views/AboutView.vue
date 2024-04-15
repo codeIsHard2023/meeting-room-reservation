@@ -23,13 +23,20 @@ export default {
   mounted() { 
 
     // fetching rooms data
-    axios.get('http://localhost:3330/api/all-rooms')
+    axios.get('http://localhost:3330/api/rooms')
     .then((res) => this.meetingRooms = res.data.rooms)
     .catch((err) => console.error("Error fetching data:", err))
 
     //fetching reservation data
-    axios.get('http://localhost:3330/api/all-reservations')
+    axios.get('http://localhost:3330/api/reservations')
     .then((res) => {this.reservations = res.data.reservations; console.log(this.reservations)})
+    .catch((err) => console.error("Error fetching data:", err))
+
+    //fetching reservation data for specific room : test version
+    const roomName = "Salle Okjsdkso"
+    const date = "2024-05-21";
+    axios.get(`http://localhost:3330/api/reservations/${roomName}/${date}`)
+    .then((res) => {this.reservations = res.data; console.log(this.reservations)})
     .catch((err) => console.error("Error fetching data:", err))
   }
 }  

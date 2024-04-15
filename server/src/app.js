@@ -1,14 +1,12 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
-const fs = require("fs");
 const app = express();
-
-/* ************* CORS configuration ************* */
-
+const path = require("path");
 /* ************* Request parsing in json format ************* */
 app.use(express.json());
 /* ************************************************ */
+
+/* ************* CORS configuration ************* */
 
 const roomsImagesPath = path.join(__dirname, "../public/images/rooms");
 app.use("/static", express.static(roomsImagesPath));
@@ -29,7 +27,6 @@ app.use(
 
 // Import the API routes from router module
 const router = require("./router");
-const exp = require("constants");
 // Mount the API routes under the "/api endpoint"
 app.use("/api", router);
 

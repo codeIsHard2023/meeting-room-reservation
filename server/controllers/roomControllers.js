@@ -33,18 +33,23 @@ const readReservations = (req, res, next) => {
 // Here we get reservations for specific room and date
 const findReservations = (req, res, next) => {
   const { room, date } = req.params;
+  const dateObject = new Date(date);
+  const formattedDateString = dateObject
+    .toUTCString()
+    .replace("UTC", "GMT")
+    .replace(/ \(.*\)/, "");
+  console.log(formattedDateString); // "Fri, 26 Apr 2024 16:58:00 GMT"
 
-  // keep this date format on client side
-  // const selectedDate = "2024-05-22";
-
-  // keeping date transformation if need further :
-  // const year = selectedDate.getFullYear();
-  // const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
-  // const day = String(selectedDate.getDate()).padStart(2, "0");
-  // const date = `${year}-${month}-${day}`;
+  // date transformation
+  const userDate = new Date(formattedDateString);
+  const year = userDate.getFullYear();
+  const month = String(userDate.getMonth() + 1).padStart(2, "0");
+  const day = String(userDate.getDate()).padStart(2, "0");
+  const formattedDate = `${year}-${month}-${day}`;
+  console.log(formattedDate);
   try {
     const roomReservations = reservations.reservations.filter((reservation) => {
-      return reservation.name === room && reservation.date === date;
+      return reservation.name === room && reservation.date === formattedDate;
     });
 
     if (roomReservations.length === 0) {

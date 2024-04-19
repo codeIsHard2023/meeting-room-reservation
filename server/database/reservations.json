@@ -2,42 +2,49 @@
   "reservations": [
     {
       "id": 1,
-      "name": "Salle #2",
+      "name": "Salle 2",
       "date": "2024-05-21",
-      "start": "11:30",
-      "end": "12:30"
+      "start": "11:00",
+      "end": "12:00"
     },
     {
       "id": 2,
-      "name": "Salle #2",
+      "name": "Salle 2",
       "date": "2024-05-22",
-      "start": "11:30",
-      "end": "12:30"
+      "start": "11:00",
+      "end": "12:00"
     },
     {
       "id": 3,
-      "name": "Salle #1",
+      "name": "Salle 1",
       "date": "2024-05-22",
-      "start": "11:30",
-      "end": "12:30"
+      "start": "10:30",
+      "end": "12:00"
     },
     {
       "id": 4,
       "name": "Salle Okjsdkso",
       "date": "2024-05-22",
-      "start": "11:30",
-      "end": "12:30"
+      "start": "10:30",
+      "end": "12:00"
     },
     {
       "id": 5,
       "name": "Salle Okjsdkso",
       "date": "2024-05-21",
-      "start": "13:30",
-      "end": "15:30"
+      "start": "8:30",
+      "end": "10:30"
     },
     {
       "id": 6,
       "name": "Salle Okjsdkso",
+      "date": "2024-05-22",
+      "start": "13:30",
+      "end": "15:30"
+    },
+    {
+      "id": 7,
+      "name": "Salle de ouf",
       "date": "2024-05-22",
       "start": "13:30",
       "end": "15:30"

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import MainBooking from '../views/MainBooking.vue'
-import SlotPick from '@/views/SlotPick.vue'
+import MainView from '../views/MainView.vue'
+import SlotView from '@/views/SlotView.vue'
 import BookingView from '@/views/BookingView.vue'
 
 const router = createRouter({
@@ -9,12 +9,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: MainBooking
+      component: MainView
     },
     {
-      path: '/slot-pick',
-      name: 'slotPick',
-      component: SlotPick
+      path: '/slot',
+      name: 'slot',
+      component: SlotView
     },
     {
       path: '/booking',

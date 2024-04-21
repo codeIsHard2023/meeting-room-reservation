@@ -1,19 +1,13 @@
 <script setup>
-import { defineProps, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useSlotStore } from '@/stores/SlotStore'
+import { useReservations } from '@/stores/ReservationsStore'
 import NavHeader from '@/components/NavHeader.vue'
-import TimeSlot from '@/components/TimeSlot.vue'
-import TestComponent from '@/components/TestComponent.vue'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
-import { useTestStore } from '@/stores/TestStore'
+import TimeSlots from './TimeSlots.vue'
 
-// const { selectedRoom, selectedDate, bookedSlots, loading, error } = storeToRefs(useSlotStore())
-// const { setSelectedDate, fetchReservations } = useSlotStore()
-
-const { timeSlots, selectedRoom, selectedDate, loading, error } = storeToRefs(useTestStore())
-const { setSelectedDate, fetchReservations } = useTestStore()
+const { timeSlots, selectedRoom, selectedDate, loading } = storeToRefs(useReservations())
+const { fetchReservations, resetTimeSlots } = useReservations()
 
 const props = defineProps({
   navigateToBookingView: {
@@ -21,15 +15,16 @@ const props = defineProps({
     required: true
   }
 })
-const pickedDate = ref(null)
 
 // Here we check if selected date is not passed
-const isPastDate = (selectedDate) => {
-  if (!selectedDate || !selectedDate.value) {
-    return false
-  }
+const isPastDate = (pickedDate) => {
+  selectedDate.value = pickedDate
+
+  // Here we define today date
   const today = new Date()
   const todayWithoutTime = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+
+  // Here we transform picked date
   const selectedDateWithoutTime = new Date(
     selectedDate.value.getFullYear(),
     selectedDate.value.getMonth(),
@@ -38,22 +33,18 @@ const isPastDate = (selectedDate) => {
   return selectedDateWithoutTime < todayWithoutTime
 }
 
+// Here we set new selected date and fetch corresponding data
 const handleDateChange = (date) => {
-  // pickedDate.value = date
-  setSelectedDate(date)
+  selectedDate.value = date
 
-  if (selectedRoom.value !== null) {
-    if (selectedRoom.value && selectedDate.value) {
-      fetchReservations(selectedRoom.value, selectedDate.value)
-    }
-  }
-}
-watch(selectedDate, (newValue) => {
-  console.log(newValue)
   if (selectedRoom.value && selectedDate.value) {
+    // ResetTimeSlots function reset timeSlots to default booked state
+    resetTimeSlots()
+
+    // Fetch reservations in funciton of selected meeting room and selected date
     fetchReservations(selectedRoom.value, selectedDate.value)
   }
-})
+}
 </script>
 
 <template>
@@ -70,9 +61,8 @@ watch(selectedDate, (newValue) => {
       La date sélectionnée est déjà passée. Veuillez choisir une date future.
     </div>
     <p v-if="loading">Chargement...</p>
-    <!-- <TimeSlot v-if="pickedDate && !isPastDate(selectedDate)" :timeSlots="timeSlots" /> -->
-    <TestComponent v-if="pickedDate && !isPastDate(selectedDate)" :timeSlots="timeSlots" />
-    <button type="button" class="validateSlot" @click="props.navigateToBookingView">
+    <TimeSlots v-if="pickedDate && !isPastDate(pickedDate)" :timeSlots="timeSlots" />
+    <button type="button" class="validateSlot" @click="navigateToBookingView">
       Passer à la reservation
     </button>
   </main>

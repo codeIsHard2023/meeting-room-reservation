@@ -2,18 +2,14 @@
 import { storeToRefs } from 'pinia'
 import { useRoomsStore } from '@/stores/RoomsStore'
 import { ref, defineProps } from 'vue'
-import { useSlotStore } from '@/stores/SlotStore'
-import { useTestStore } from '@/stores/TestStore'
+import { useReservations } from '@/stores/ReservationsStore'
 import RoomButton from './RoomButton.vue'
 import RoomDesc from './RoomDesc.vue'
 
 const { rooms, loading, error } = storeToRefs(useRoomsStore())
 const { fetchRooms } = useRoomsStore()
-// const { selectedRoom } = storeToRefs(useSlotStore())
-// const { setSelectedRoom } = useSlotStore()
-const { selectedRoom } = storeToRefs(useTestStore())
 
-const { setSelectedRoom } = useTestStore()
+const { selectedRoom } = storeToRefs(useReservations())
 
 const activeRoom = ref(null)
 const props = defineProps({
@@ -33,7 +29,7 @@ const setActiveRoom = (room) => {
 }
 
 const handleRoomSelection = (roomName) => {
-  setSelectedRoom(roomName)
+  selectedRoom.value = roomName
 }
 </script>
 

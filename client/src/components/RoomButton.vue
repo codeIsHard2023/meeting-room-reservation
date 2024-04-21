@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, defineEmits, ref } from 'vue'
+import { defineEmits } from 'vue'
 
 const props = defineProps(['room'])
 const emit = defineEmits(['activate'])

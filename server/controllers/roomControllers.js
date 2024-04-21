@@ -38,8 +38,6 @@ const findReservations = (req, res, next) => {
     .toUTCString()
     .replace("UTC", "GMT")
     .replace(/ \(.*\)/, "");
-  console.log(formattedDateString); // "Fri, 26 Apr 2024 16:58:00 GMT"
-
   // date transformation
   const userDate = new Date(formattedDateString);
   const year = userDate.getFullYear();

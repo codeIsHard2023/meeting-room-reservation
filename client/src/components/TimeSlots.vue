@@ -1,12 +1,5 @@
 <script setup>
-import { storeToRefs } from 'pinia'
-import { useTestStore } from '@/stores/TestStore'
-
-// const { timeSlots } = storeToRefs(useTestStore())
-// console.log(timeSlots.value)
 const props = defineProps(['timeSlots'])
-
-console.log(props.timeSlots)
 </script>
 
 <template>

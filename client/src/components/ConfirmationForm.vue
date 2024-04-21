@@ -1,3 +1,7 @@
+<script setup>
+import NavHeader from './NavHeader.vue'
+</script>
+
 <template>
   <NavHeader />
   <form action="submit" class="reservationForm">
@@ -11,10 +15,6 @@
     <button type="submit" class="bookButton">Réserver la salle</button>
   </form>
 </template>
-
-<script setup>
-import NavHeader from './NavHeader.vue'
-</script>
 
 <style scoped>
 .reservationForm {

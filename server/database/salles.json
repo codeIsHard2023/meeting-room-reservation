@@ -1,9 +1,9 @@
 {
   "rooms": [
     {
-      "name": "Salle #1",
+      "name": "Salle 1",
       "description": "Salle #1",
-      "roomPhoto" : "/static/room-0.jpeg",
+      "roomPhoto": "/static/room-0.jpeg",
       "capacity": 5,
       "equipements": [
         {
@@ -19,9 +19,9 @@
       "updatedAt": "2016-12-08T17:31:39.489Z"
     },
     {
-      "name": "Salle #2",
+      "name": "Salle 2",
       "description": "Salle #2",
-      "roomPhoto" : "/static/room-1.jpeg",
+      "roomPhoto": "/static/room-1.jpeg",
       "capacity": 10,
       "equipements": [
         {
@@ -35,7 +35,7 @@
     {
       "name": "Salle Okjsdkso",
       "description": "Salle Okjsdkso",
-      "roomPhoto" : "/static/room-2.jpeg",
+      "roomPhoto": "/static/room-2.jpeg",
       "capacity": 11,
       "equipements": [],
       "createdAt": "2016-12-07T14:15:55.733Z",
@@ -44,7 +44,7 @@
     {
       "name": "Salle de ouf",
       "description": "Salle de ouf",
-      "roomPhoto" : "/static/room-3.jpeg",
+      "roomPhoto": "/static/room-3.jpeg",
       "capacity": 10,
       "equipements": [
         {
@@ -62,7 +62,7 @@
     {
       "name": "Salle nulle",
       "description": "Salle nulle",
-      "roomPhoto" : "/static/room-4.jpeg",
+      "roomPhoto": "/static/room-4.jpeg",
       "capacity": 26,
       "equipements": [
         {
@@ -71,7 +71,8 @@
         },
         {
           "name": "Retro Projecteur",
-          "imgSrc": "/static/tv.png"        }
+          "imgSrc": "/static/projector.png"
+        }
       ],
       "createdAt": "2016-12-09T16:45:49.096Z",
       "updatedAt": "2016-12-09T16:45:49.096Z"

@@ -6,9 +6,11 @@ import { useReservationsStore } from '@/stores/ReservationsStore'
 import RoomButton from './RoomButton.vue'
 import RoomDesc from './RoomDesc.vue'
 
-const { rooms, loading, error } = storeToRefs(useRoomsStore())
+const { rooms, loading } = storeToRefs(useRoomsStore())
 const { fetchRooms } = useRoomsStore()
-const { newChosedSlot, selectedRoom } = storeToRefs(useReservationsStore())
+fetchRooms()
+const { newChoice, selectedRoom } = storeToRefs(useReservationsStore())
+const { fetchReservations } = useReservationsStore()
 const activeRoom = ref(null)
 const buttonText = ref('Choisissez une salle')
 const props = defineProps({
@@ -18,8 +20,7 @@ const props = defineProps({
   }
 })
 
-fetchRooms()
-
+// Manager for active room
 const setActiveRoom = (room) => {
   if (activeRoom.value === room) {
     activeRoom.value = null
@@ -28,14 +29,16 @@ const setActiveRoom = (room) => {
   }
 }
 
+// Manager for room states
 const handleRoomSelection = (roomName) => {
-  newChosedSlot.value.roomName = roomName
+  newChoice.value.roomName = roomName
   selectedRoom.value = roomName
 }
 
 watch(selectedRoom, (newValue) => {
   if (newValue) {
     buttonText.value = 'Choisir un créneau'
+    fetchReservations(newValue, newChoice.value.date)
   }
 })
 </script>
@@ -44,7 +47,6 @@ watch(selectedRoom, (newValue) => {
   <main id="roomSelection">
     <h1>Salles de réunion disponibles</h1>
     <p v-if="loading">Chargement...</p>
-    <p v-if="error">{{ error.message }}</p>
     <div class="roomContainer">
       <div v-if="rooms">
         <div class="rooms">
@@ -136,7 +138,9 @@ watch(selectedRoom, (newValue) => {
   justify-content: center;
   font-size: calc(var(--text-size) * 2.5);
 }
-
+.guideMessage:hover {
+  background-color: #425b76d4;
+}
 @media screen and (max-width: 640px) {
   #roomSelection h1 {
     font-size: calc(var(--header-size) / 1.3);

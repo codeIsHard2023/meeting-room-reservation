@@ -7,7 +7,7 @@ import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import TimeSlots from './TimeSlots.vue'
 
-const { timeSlots, newChosedSlot, selectedRoom, selectedDate, loading } =
+const { timeSlots, newChoice, selectedRoom, selectedDate, loading } =
   storeToRefs(useReservationsStore())
 const { fetchReservations, resetTimeSlots } = useReservationsStore()
 
@@ -44,17 +44,17 @@ const handleDateChange = (date) => {
   const day = String(userDate.getDate()).padStart(2, '0')
   const formattedDate = `${year}-${month}-${day}`
   selectedDate.value = formattedDate
-  newChosedSlot.value.date = formattedDate
+  newChoice.value.date = formattedDate
 
   if (selectedRoom.value && selectedDate.value) {
     // ResetTimeSlots function reset timeSlots to default booked state
     resetTimeSlots()
 
-    // Fetch reservations in funciton of selected meeting room and selected date
+    // Fetch reservations
     fetchReservations(selectedRoom.value, selectedDate.value)
   }
 }
-const displayDate = ref('')
+const displayDate = ref(newChoice.value.date)
 const formatDate = (dateString) => {
   const date = new Date(dateString)
   const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
@@ -62,12 +62,17 @@ const formatDate = (dateString) => {
 }
 
 watch(
-  [() => newChosedSlot.value.start, () => newChosedSlot.value.end, () => newChosedSlot.value.date],
+  [
+    () => newChoice.value.start,
+    () => newChoice.value.end,
+    () => newChoice.value.date,
+    newChoice.value.roomName
+  ],
   ([newStart, newEnd, newDate]) => {
     if (newStart && newEnd) {
       buttonText.value = 'Passer à la réservation'
     } else {
-      buttonText.value = 'Choisissez le début et la fin de créneau'
+      buttonText.value = 'Choisissez le début et la fin du créneau'
     }
     displayDate.value = formatDate(newDate)
   }
@@ -87,17 +92,15 @@ watch(
     <p v-if="pickedDate && isPastDate(pickedDate)" class="alertMessage">
       La date {{ displayDate }} est déjà passée. Veuillez choisir une date future.
     </p>
-    <p v-else-if="displayDate">Vous avez choisie le {{ displayDate }}</p>
+    <p v-else-if="displayDate || newChoice.date">Vous avez choisie le {{ displayDate }}</p>
 
     <p v-if="loading">Chargement...</p>
     <TimeSlots
-      v-if="
-        (pickedDate && !isPastDate(pickedDate)) || (newChosedSlot.date && newChosedSlot.roomName)
-      "
+      v-if="(pickedDate && !isPastDate(pickedDate)) || (newChoice.date && newChoice.roomName)"
       :timeSlots="timeSlots"
     />
     <button
-      :disabled="!newChosedSlot.start && !newChosedSlot.end"
+      :disabled="!newChoice.start && !newChoice.end"
       type="button"
       class="validateSlot"
       @click="navigateToBookingView"
@@ -119,6 +122,15 @@ watch(
   flex-direction: column;
   align-items: center;
 }
+
+.vueDatePicker {
+  width: 83%;
+  margin-bottom: 2rem;
+}
+.alertMessage {
+  width: 83%;
+  margin-bottom: 1rem;
+}
 .validateSlot {
   width: 100%;
   height: 70px;
@@ -132,12 +144,7 @@ watch(
   justify-content: center;
   font-size: calc(var(--text-size) * 2.5);
 }
-.vueDatePicker {
-  width: 83%;
-  margin-bottom: 2rem;
-}
-.alertMessage {
-  width: 83%;
-  margin-bottom: 1rem;
+.validateSlot:hover {
+  background-color: #425b76d4;
 }
 </style>

@@ -23,7 +23,7 @@ export const useReservationsStore = defineStore({
         { start: '16:30', end: '17:00', booked: false }
       ]
     },
-    newChosedSlot: {
+    newChoice: {
       roomName: '',
       date: null,
       start: '',
@@ -38,13 +38,6 @@ export const useReservationsStore = defineStore({
     error: null
   }),
   actions: {
-    setSelectedRoom(room) {
-      this.selectedRoom = room
-    },
-    setSelectedDate(date) {
-      this.selectedDate = date
-    },
-
     // Fetch reservations
     async fetchReservations(selectedRoom, selectedDate) {
       this.bookedSlots = []
@@ -60,7 +53,6 @@ export const useReservationsStore = defineStore({
 
         this.bookedSlots = data
         this.setBookedSlots()
-        this.filterFreeSlots()
       } catch (error) {
         this.error = error
       } finally {
@@ -72,42 +64,55 @@ export const useReservationsStore = defineStore({
       const morningSlots = this.timeSlots.am
       const afternoonSlots = this.timeSlots.pm
 
-      return this.bookedSlots.forEach((slot) => {
-        const morgning = { startIndex: -1, endIndex: -1 }
-        const afternoon = { startIndex: -1, endIndex: -1 }
+      // Here we define today date
+      const today = new Date()
+      const todayWithoutTime = new Date(today.getFullYear(), today.getMonth(), today.getDate())
 
-        // Find time slot start and end
-        morningSlots.forEach((morningSlot, index) => {
-          if (slot.start === morningSlot.start) {
-            morgning.startIndex = index
-          }
-          if (slot.end === morningSlot.end) {
-            morgning.endIndex = index
+      if (this.selectedDate < todayWithoutTime) {
+        morningSlots.forEach((slot) => {
+          slot.booked = true
+        })
+        afternoonSlots.forEach((slot) => {
+          slot.booked = true
+        })
+      } else {
+        return this.bookedSlots.forEach((slot) => {
+          const morgning = { startIndex: -1, endIndex: -1 }
+          const afternoon = { startIndex: -1, endIndex: -1 }
+
+          // Find time slot start and end
+          morningSlots.forEach((morningSlot, index) => {
+            if (slot.start === morningSlot.start) {
+              morgning.startIndex = index
+            }
+            if (slot.end === morningSlot.end) {
+              morgning.endIndex = index
+            }
+          })
+
+          afternoonSlots.forEach((afternoonSlot, index) => {
+            if (slot.start === afternoonSlot.start) {
+              afternoon.startIndex = index
+            }
+            if (slot.end === afternoonSlot.end) {
+              afternoon.endIndex = index
+            }
+          })
+
+          // Disable booked time slots
+          if (morgning.startIndex !== -1 && morgning.endIndex !== -1) {
+            for (let i = morgning.startIndex; i <= morgning.endIndex; i++) {
+              morningSlots[i].booked = true
+              morningSlots[i].active = false
+            }
+          } else if (afternoon.startIndex !== -1 && afternoon.endIndex !== -1) {
+            for (let i = afternoon.startIndex; i <= afternoon.endIndex; i++) {
+              afternoonSlots[i].booked = true
+              afternoonSlots[i].active = false
+            }
           }
         })
-
-        afternoonSlots.forEach((afternoonSlot, index) => {
-          if (slot.start === afternoonSlot.start) {
-            afternoon.startIndex = index
-          }
-          if (slot.end === afternoonSlot.end) {
-            afternoon.endIndex = index
-          }
-        })
-
-        // Disable booked time slots
-        if (morgning.startIndex !== -1 && morgning.endIndex !== -1) {
-          for (let i = morgning.startIndex; i <= morgning.endIndex; i++) {
-            morningSlots[i].booked = true
-            morningSlots[i].active = false
-          }
-        } else if (afternoon.startIndex !== -1 && afternoon.endIndex !== -1) {
-          for (let i = afternoon.startIndex; i <= afternoon.endIndex; i++) {
-            afternoonSlots[i].booked = true
-            afternoonSlots[i].active = false
-          }
-        }
-      })
+      }
     },
 
     // Function used to reset timeslots booked value
@@ -134,19 +139,7 @@ export const useReservationsStore = defineStore({
       })
     },
 
-    filterFreeSlots() {
-      const freeSlots = {
-        am: this.timeSlots.am
-          .map((slot) => ({ ...slot, active: false }))
-          .filter((slot) => !slot.booked),
-        pm: this.timeSlots.pm
-          .map((slot) => ({ ...slot, active: false }))
-          .filter((slot) => !slot.booked)
-      }
-
-      return freeSlots
-    },
-
+    // Create new reservation
     async postNewReservation() {
       this.error = false
       const userDate = new Date(this.selectedDate)
@@ -154,26 +147,23 @@ export const useReservationsStore = defineStore({
       const month = String(userDate.getMonth() + 1).padStart(2, '0')
       const day = String(userDate.getDate()).padStart(2, '0')
       const formattedDate = `${year}-${month}-${day}`
-      this.newChosedSlot.date = formattedDate
+      this.newChoice.date = formattedDate
       try {
         const response = await fetch('http://localhost:3330/api/post-reservation', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(this.newChosedSlot)
+          body: JSON.stringify(this.newChoice)
         })
 
         if (response.ok) {
-          // La réservation a été créée avec succès
           console.log('Réservation créée avec succès')
         } else {
-          // La création de la réservation a échoué
           console.error('Échec de la création de la réservation')
           this.error = true
         }
       } catch (error) {
-        // Une erreur s'est produite lors de l'envoi de la requête
         console.error("Erreur lors de l'envoi de la requête :", error)
         this.error = true
       }

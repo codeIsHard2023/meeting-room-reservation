@@ -4,14 +4,14 @@ import { useReservationsStore } from '@/stores/ReservationsStore'
 import { ref } from 'vue'
 import NavHeader from './NavHeader.vue'
 
-const { newChosedSlot, error } = storeToRefs(useReservationsStore())
+const { newChoice, error } = storeToRefs(useReservationsStore())
 const { postNewReservation, fetchReservations } = useReservationsStore()
 const firstname = ref('')
 const lastname = ref('')
 const succesMessage = ref('')
 const messageOpacity = ref(0)
 
-const dateString = newChosedSlot.value.date
+const dateString = newChoice.value.date
 const formatDate = (dateString) => {
   const date = new Date(dateString)
   const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
@@ -21,12 +21,12 @@ const displayDate = formatDate(dateString)
 
 const handleFirstnameChange = (event) => {
   firstname.value = event.target.value
-  newChosedSlot.value.firstname = firstname.value
+  newChoice.value.firstname = firstname.value
 }
 
 const handleLastnameChange = (event) => {
   lastname.value = event.target.value
-  newChosedSlot.value.lastname = lastname.value
+  newChoice.value.lastname = lastname.value
 }
 
 const handleSubmitReservation = async (event) => {
@@ -37,12 +37,12 @@ const handleSubmitReservation = async (event) => {
     messageOpacity.value = 1
     if (error.value) {
       succesMessage.value =
-        'Il y a eu une erreur lors de la soummission. Vérifiez vos choix: nom de la salle, la date, les créneaux horaires'
+        'Il y a eu une erreur lors de la soumission. Veuillez vérifier vos choix : le nom de la salle, la date et les créneaux horaires.'
       messageOpacity.value = 1
     }
     await fetchReservations()
-  } catch (error) {
-    console.error(error)
+  } catch (err) {
+    console.error(err)
   }
 }
 </script>
@@ -51,8 +51,8 @@ const handleSubmitReservation = async (event) => {
   <NavHeader />
   <form @submit.prevent="handleSubmitReservation" class="reservationForm">
     <h2>Vos Informations</h2>
-    <span>{{ newChosedSlot.roomName }}</span>
-    <span> {{ displayDate }} de {{ newChosedSlot.start }} à {{ newChosedSlot.end }}</span>
+    <span>{{ newChoice.roomName }}</span>
+    <span> {{ displayDate }} de {{ newChoice.start }} à {{ newChoice.end }}</span>
     <label for="firstname">Prénom</label>
     <input
       v-model="firstname"
@@ -115,7 +115,7 @@ const handleSubmitReservation = async (event) => {
   margin-inline: 5rem;
 }
 .reservationForm p {
-  font-weight: 600;
+  font-weight: 400;
   text-align: center;
   margin-top: calc(var(--margin) * 10);
 }
@@ -134,6 +134,6 @@ const handleSubmitReservation = async (event) => {
   font-size: calc(var(--text-size) * 2.5);
 }
 .bookButton:hover {
-  background-color: #425b766a;
+  background-color: #425b76d4;
 }
 </style>

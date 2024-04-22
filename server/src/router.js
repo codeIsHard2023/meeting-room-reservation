@@ -12,6 +12,6 @@ router.get("/check-status-router", roomControllers.testBrowse);
 router.get("/rooms", roomControllers.read);
 router.get("/reservations", roomControllers.readReservations);
 router.get("/reservations/:room/:date", roomControllers.findReservations);
-router.post("/post-reservation", roomControllers.add);
+router.post("/post-reservation", roomControllers.create);
 /* ************************************************ */
 module.exports = router;

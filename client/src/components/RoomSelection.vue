@@ -1,23 +1,23 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useRoomsStore } from '@/stores/RoomsStore'
-import { ref, defineProps } from 'vue'
-import { useReservations } from '@/stores/ReservationsStore'
+import { ref, defineProps, watch } from 'vue'
+import { useReservationsStore } from '@/stores/ReservationsStore'
 import RoomButton from './RoomButton.vue'
 import RoomDesc from './RoomDesc.vue'
 
 const { rooms, loading, error } = storeToRefs(useRoomsStore())
 const { fetchRooms } = useRoomsStore()
-
-const { selectedRoom } = storeToRefs(useReservations())
-
+const { newChosedSlot, selectedRoom } = storeToRefs(useReservationsStore())
 const activeRoom = ref(null)
+const buttonText = ref('Choisissez une salle')
 const props = defineProps({
   navigateToSlotView: {
     type: Function,
     required: true
   }
 })
+
 fetchRooms()
 
 const setActiveRoom = (room) => {
@@ -29,8 +29,15 @@ const setActiveRoom = (room) => {
 }
 
 const handleRoomSelection = (roomName) => {
+  newChosedSlot.value.roomName = roomName
   selectedRoom.value = roomName
 }
+
+watch(selectedRoom, (newValue) => {
+  if (newValue) {
+    buttonText.value = 'Choisir un créneau'
+  }
+})
 </script>
 
 <template>
@@ -55,8 +62,13 @@ const handleRoomSelection = (roomName) => {
     <div class="info">
       <RoomDesc v-if="activeRoom" :room="activeRoom" />
     </div>
-    <button type="button" class="guideMessage" @click="props.navigateToSlotView">
-      Choisir un créneau
+    <button
+      :disabled="!selectedRoom"
+      type="button"
+      class="guideMessage"
+      @click="props.navigateToSlotView"
+    >
+      {{ buttonText }}
     </button>
   </main>
 </template>
@@ -92,11 +104,14 @@ const handleRoomSelection = (roomName) => {
 .info {
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 1rem;
   margin-bottom: calc(var(--margin) * 3);
 }
+
 .availability {
   width: 140px;
   height: 42px;

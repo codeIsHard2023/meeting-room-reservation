@@ -1,17 +1,77 @@
 <script setup>
+import { storeToRefs } from 'pinia'
+import { useReservationsStore } from '@/stores/ReservationsStore'
+import { ref } from 'vue'
 import NavHeader from './NavHeader.vue'
+
+const { newChosedSlot, error } = storeToRefs(useReservationsStore())
+const { postNewReservation, fetchReservations } = useReservationsStore()
+const firstname = ref('')
+const lastname = ref('')
+const succesMessage = ref('')
+const messageOpacity = ref(0)
+
+const dateString = newChosedSlot.value.date
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
+  return new Intl.DateTimeFormat('fr-FR', options).format(date)
+}
+const displayDate = formatDate(dateString)
+
+const handleFirstnameChange = (event) => {
+  firstname.value = event.target.value
+  newChosedSlot.value.firstname = firstname.value
+}
+
+const handleLastnameChange = (event) => {
+  lastname.value = event.target.value
+  newChosedSlot.value.lastname = lastname.value
+}
+
+const handleSubmitReservation = async (event) => {
+  event.preventDefault()
+  try {
+    await postNewReservation()
+    succesMessage.value = 'Votre réservation est enregistrée'
+    messageOpacity.value = 1
+    if (error.value) {
+      succesMessage.value =
+        'Il y a eu une erreur lors de la soummission. Vérifiez vos choix: nom de la salle, la date, les créneaux horaires'
+      messageOpacity.value = 1
+    }
+    await fetchReservations()
+  } catch (error) {
+    console.error(error)
+  }
+}
 </script>
 
 <template>
   <NavHeader />
-  <form action="submit" class="reservationForm">
+  <form @submit.prevent="handleSubmitReservation" class="reservationForm">
     <h2>Vos Informations</h2>
-    <span>Salle#1</span>
-    <span>lundi 22 avril 2024 de 16h00 à 18h00</span>
+    <span>{{ newChosedSlot.roomName }}</span>
+    <span> {{ displayDate }} de {{ newChosedSlot.start }} à {{ newChosedSlot.end }}</span>
     <label for="firstname">Prénom</label>
-    <input type="text" id="firstname" required placeholder="Prénom" />
+    <input
+      v-model="firstname"
+      @input="handleFirstnameChange"
+      type="text"
+      id="firstname"
+      required
+      placeholder="Prénom"
+    />
     <label for="lastname">Nom</label>
-    <input type="text" id="lastname" required placeholder="Nom" />
+    <input
+      v-model="lastname"
+      @input="handleLastnameChange"
+      type="text"
+      id="lastname"
+      required
+      placeholder="Nom"
+    />
+    <p :style="{ opacity: messageOpacity }">{{ succesMessage }}</p>
     <button type="submit" class="bookButton">Réserver la salle</button>
   </form>
 </template>
@@ -50,13 +110,19 @@ import NavHeader from './NavHeader.vue'
 .reservationForm h2,
 .reservationForm span,
 .reservationForm label,
-.reservationForm input {
+.reservationForm input,
+.reservationForm p {
   margin-inline: 5rem;
+}
+.reservationForm p {
+  font-weight: 600;
+  text-align: center;
+  margin-top: calc(var(--margin) * 10);
 }
 .bookButton {
   width: 100%;
-  margin-top: calc(var(--margin) * 10);
   height: 70px;
+  margin-top: calc(var(--margin) * 4);
   border-end-start-radius: 16px;
   border-end-end-radius: 16px;
   border: none;
@@ -66,5 +132,8 @@ import NavHeader from './NavHeader.vue'
   align-items: center;
   justify-content: center;
   font-size: calc(var(--text-size) * 2.5);
+}
+.bookButton:hover {
+  background-color: #425b766a;
 }
 </style>

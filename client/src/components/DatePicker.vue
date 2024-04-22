@@ -1,14 +1,17 @@
 <script setup>
 import { storeToRefs } from 'pinia'
-import { useReservations } from '@/stores/ReservationsStore'
+import { useReservationsStore } from '@/stores/ReservationsStore'
+import { ref, watch } from 'vue'
 import NavHeader from '@/components/NavHeader.vue'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import TimeSlots from './TimeSlots.vue'
 
-const { timeSlots, selectedRoom, selectedDate, loading } = storeToRefs(useReservations())
-const { fetchReservations, resetTimeSlots } = useReservations()
+const { timeSlots, newChosedSlot, selectedRoom, selectedDate, loading } =
+  storeToRefs(useReservationsStore())
+const { fetchReservations, resetTimeSlots } = useReservationsStore()
 
+const buttonText = ref('Choisissez le début et la fin de créneau')
 const props = defineProps({
   navigateToBookingView: {
     type: Function,
@@ -35,7 +38,13 @@ const isPastDate = (pickedDate) => {
 
 // Here we set new selected date and fetch corresponding data
 const handleDateChange = (date) => {
-  selectedDate.value = date
+  const userDate = new Date(date)
+  const year = userDate.getFullYear()
+  const month = String(userDate.getMonth() + 1).padStart(2, '0')
+  const day = String(userDate.getDate()).padStart(2, '0')
+  const formattedDate = `${year}-${month}-${day}`
+  selectedDate.value = formattedDate
+  newChosedSlot.value.date = formattedDate
 
   if (selectedRoom.value && selectedDate.value) {
     // ResetTimeSlots function reset timeSlots to default booked state
@@ -45,25 +54,55 @@ const handleDateChange = (date) => {
     fetchReservations(selectedRoom.value, selectedDate.value)
   }
 }
+const displayDate = ref('')
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
+  return new Intl.DateTimeFormat('fr-FR', options).format(date)
+}
+
+watch(
+  [() => newChosedSlot.value.start, () => newChosedSlot.value.end, () => newChosedSlot.value.date],
+  ([newStart, newEnd, newDate]) => {
+    if (newStart && newEnd) {
+      buttonText.value = 'Passer à la réservation'
+    } else {
+      buttonText.value = 'Choisissez le début et la fin de créneau'
+    }
+    displayDate.value = formatDate(newDate)
+  }
+)
 </script>
 
 <template>
   <main id="timeSlotSelection">
     <NavHeader />
-    <h2>Choisissez une date</h2>
+    <h2>Choisissez une date ici</h2>
     <VueDatePicker
       v-model="pickedDate"
       @update:modelValue="handleDateChange"
       :enable-time-picker="false"
       class="vueDatePicker"
     ></VueDatePicker>
-    <div v-if="pickedDate && isPastDate(pickedDate)" class="alertMessage">
-      La date sélectionnée est déjà passée. Veuillez choisir une date future.
-    </div>
+    <p v-if="pickedDate && isPastDate(pickedDate)" class="alertMessage">
+      La date {{ displayDate }} est déjà passée. Veuillez choisir une date future.
+    </p>
+    <p v-else-if="displayDate">Vous avez choisie le {{ displayDate }}</p>
+
     <p v-if="loading">Chargement...</p>
-    <TimeSlots v-if="pickedDate && !isPastDate(pickedDate)" :timeSlots="timeSlots" />
-    <button type="button" class="validateSlot" @click="navigateToBookingView">
-      Passer à la reservation
+    <TimeSlots
+      v-if="
+        (pickedDate && !isPastDate(pickedDate)) || (newChosedSlot.date && newChosedSlot.roomName)
+      "
+      :timeSlots="timeSlots"
+    />
+    <button
+      :disabled="!newChosedSlot.start && !newChosedSlot.end"
+      type="button"
+      class="validateSlot"
+      @click="navigateToBookingView"
+    >
+      {{ buttonText }}
     </button>
   </main>
 </template>

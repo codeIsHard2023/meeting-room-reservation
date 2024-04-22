@@ -5,40 +5,51 @@ const props = defineProps(['room'])
 </script>
 
 <template>
-  <div class="equipement">
-    <h2>Equipements</h2>
-    <div class="items">
-      <span v-if="room.equipements.length === 0"> Sans équipements</span>
-      <img
-        v-for="equipement in room.equipements"
-        :key="equipement"
-        :src="`${$env.VITE_BACKEND_URL}${equipement.imgSrc}`"
-        :alt="equipement.name"
-        class="equipementImage"
-      />
+  <h2 class="titleRoom">Salle choisie : {{ room.name }}</h2>
+  <div class="roomCharacteristics">
+    <div class="equipement">
+      <h3>Equipements</h3>
+      <div class="items">
+        <span v-if="room.equipements.length === 0"> Sans équipements</span>
+        <img
+          v-for="equipement in room.equipements"
+          :key="equipement"
+          :src="`${$env.VITE_BACKEND_URL}${equipement.imgSrc}`"
+          :alt="equipement.name"
+          class="equipementImage"
+        />
+      </div>
     </div>
-  </div>
-  <div class="capacity">
-    <h2>Capacité</h2>
-    <span> {{ room.capacity }} personnes</span>
+    <div class="capacity">
+      <h3>Capacité</h3>
+      <span> {{ room.capacity }} personnes</span>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.titleRoom {
+  font-weight: 600;
+  text-decoration: underline;
+}
+.roomCharacteristics {
+  display: flex;
+  gap: 2rem;
+}
 .equipement,
 .capacity {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.equipement h2,
-.capacity h2 {
+.equipement h3,
+.capacity h3 {
   font-family:
     Open Sans,
     sans-serif;
   font-size: calc(var(--text-size) * 2.5);
   font-weight: 600;
-  text-decoration: underline;
+  /* text-decoration: underline; */
 }
 .items {
   display: flex;

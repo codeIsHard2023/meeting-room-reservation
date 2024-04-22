@@ -1,14 +1,25 @@
+<script setup>
+import { useReservationsStore } from '@/stores/ReservationsStore'
+import chevronLeft from '@/assets/icons/chevronLeft.svg'
+import homeIcon from '@/assets/icons/homeIcon.svg'
+import { storeToRefs } from 'pinia'
+
+const { selectedDate, selectedRoom } = storeToRefs(useReservationsStore())
+const { fetchReservations } = useReservationsStore()
+
+const fetchData = async () => {
+  // Appeler fetchReservations avec les paramètres appropriés
+  await fetchReservations(selectedRoom, selectedDate)
+}
+</script>
 <template>
   <header class="header">
-    <RouterLink to="/"><img :src="chevronLeft" alt="click to go back" /> </RouterLink>
+    <RouterLink to="/slot" @click="fetchData"
+      ><img :src="chevronLeft" alt="click to go back" />
+    </RouterLink>
     <RouterLink to="/"><img :src="homeIcon" alt="click to go home" /> </RouterLink>
   </header>
 </template>
-
-<script setup>
-import chevronLeft from '@/assets/icons/chevronLeft.svg'
-import homeIcon from '@/assets/icons/homeIcon.svg'
-</script>
 
 <style scoped>
 .header {

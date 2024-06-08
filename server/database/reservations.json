@@ -1,3 +1,13 @@
 {
-  "reservations": []
+  "reservations": [
+    {
+      "id": 1,
+      "roomName": "Salle 2",
+      "date": "2024-06-07",
+      "start": "8:30",
+      "end": "10:00",
+      "firstname": "qsdf",
+      "lastname": "qsdf"
+    }
+  ]
 }

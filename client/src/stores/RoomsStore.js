@@ -13,7 +13,7 @@ export const useRoomsStore = defineStore({
       this.rooms = []
       this.loading = true
       try {
-        const response = await fetch('http://localhost:3330/api/rooms')
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/rooms`)
         if (!response.ok) {
           throw new Error('Failed to fetch rooms')
         }

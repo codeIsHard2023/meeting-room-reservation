@@ -19,32 +19,34 @@ const props = defineProps({
   }
 })
 
+const formattedDate = (pickedDate) => {
+  const userDate = new Date(pickedDate)
+  const year = userDate.getFullYear()
+  const month = String(userDate.getMonth() + 1).padStart(2, '0')
+  const day = String(userDate.getDay()).padStart(2, '0')
+  const result = `${year}-${month}-${day}`
+
+  return result
+}
 // Here we check if selected date is not passed
 const isPastDate = (pickedDate) => {
-  selectedDate.value = pickedDate
-
   // Here we define today date
   const today = new Date()
   const todayWithoutTime = new Date(today.getFullYear(), today.getMonth(), today.getDate())
 
   // Here we transform picked date
   const selectedDateWithoutTime = new Date(
-    selectedDate.value.getFullYear(),
-    selectedDate.value.getMonth(),
-    selectedDate.value.getDate()
+    pickedDate.getFullYear(),
+    pickedDate.getMonth(),
+    pickedDate.getDate()
   )
   return selectedDateWithoutTime < todayWithoutTime
 }
 
 // Here we set new selected date and fetch corresponding data
 const handleDateChange = (date) => {
-  const userDate = new Date(date)
-  const year = userDate.getFullYear()
-  const month = String(userDate.getMonth() + 1).padStart(2, '0')
-  const day = String(userDate.getDate()).padStart(2, '0')
-  const formattedDate = `${year}-${month}-${day}`
-  selectedDate.value = formattedDate
-  newChoice.value.date = formattedDate
+  selectedDate.value = formattedDate(date)
+  newChoice.value.date = formattedDate(date)
 
   if (selectedRoom.value && selectedDate.value) {
     // ResetTimeSlots function reset timeSlots to default booked state
@@ -54,12 +56,12 @@ const handleDateChange = (date) => {
     fetchReservations(selectedRoom.value, selectedDate.value)
   }
 }
-const displayDate = ref(newChoice.value.date)
 const formatDate = (dateString) => {
   const date = new Date(dateString)
   const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
   return new Intl.DateTimeFormat('fr-FR', options).format(date)
 }
+const displayDate = ref(formatDate(selectedDate.value))
 
 watch(
   [

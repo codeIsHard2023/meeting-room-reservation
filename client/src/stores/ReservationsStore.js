@@ -24,12 +24,12 @@ export const useReservationsStore = defineStore({
       ]
     },
     newChoice: {
-      roomName: '',
+      roomName: null,
       date: null,
-      start: '',
-      end: '',
-      firstname: '',
-      lastname: ''
+      start: null,
+      end: null,
+      firstname: null,
+      lastname: null
     },
     selectedRoom: null,
     selectedDate: null,
@@ -44,7 +44,7 @@ export const useReservationsStore = defineStore({
       this.loading = true
       try {
         const response = await fetch(
-          `http://localhost:3330/api/reservations/${selectedRoom}/${selectedDate}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/reservations/${selectedRoom}/${selectedDate}`
         )
         if (!response.ok) {
           throw new Error('Failed to fetch reservations')
@@ -149,7 +149,7 @@ export const useReservationsStore = defineStore({
       const formattedDate = `${year}-${month}-${day}`
       this.newChoice.date = formattedDate
       try {
-        const response = await fetch('http://localhost:3330/api/post-reservation', {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post-reservation`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

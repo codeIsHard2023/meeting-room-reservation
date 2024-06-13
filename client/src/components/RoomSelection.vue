@@ -73,7 +73,7 @@ watch(selectedRoom, (newValue) => {
       <RoomDesc v-if="activeRoom" :room="activeRoom" />
     </div>
     <button
-      :disabled="!selectedRoom"
+      :disabled="!newChoice.roomName"
       type="button"
       class="guideMessage"
       @click="props.navigateToSlotView"

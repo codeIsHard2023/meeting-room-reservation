@@ -37,7 +37,7 @@ const findReservations = (req, res, next) => {
     });
 
     if (roomReservations.length === 0) {
-      res.status(404).json({ message: "Data not found" });
+      res.status(200).json({ message: "No reservations" });
     } else {
       res.status(200).json(roomReservations);
     }

@@ -1,31 +1,16 @@
 <script setup>
-import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
-import { useReservationsStore } from '@/stores/ReservationsStore'
 import chevronLeft from '@/assets/icons/chevronLeft.svg'
 import homeIcon from '@/assets/icons/homeIcon.svg'
-
-const { selectedDate, selectedRoom } = storeToRefs(useReservationsStore())
-const { fetchReservations } = useReservationsStore()
 
 const router = useRouter()
 
 const navigateToPreviousView = () => {
-  const previousRoute = router.currentRoute.value.from
+  const previousRoute = router.currentRoute.value.fullPath
   if (previousRoute === '/slot') {
     router.push('/')
   } else {
     router.push('/slot')
-    fetchData()
-  }
-}
-
-const fetchData = async () => {
-  // Call fetchReservations for data reloading
-  try {
-    await fetchReservations(selectedRoom.value, selectedDate.value)
-  } catch (error) {
-    console.error(error)
   }
 }
 </script>

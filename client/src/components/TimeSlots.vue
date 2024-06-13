@@ -4,8 +4,8 @@ import { storeToRefs } from 'pinia'
 import { useReservationsStore } from '@/stores/ReservationsStore'
 
 // Test props in vue 3
-const props = defineProps(['timeSlots'])
-const { timeSlots, newChoice } = storeToRefs(useReservationsStore())
+const props = defineProps(['timeSlots', 'isPassedDate'])
+const { newChoice } = storeToRefs(useReservationsStore())
 const selectedSlots = ref([])
 
 // Called when time slot selected or unselected

@@ -24,12 +24,12 @@ export const useReservationsStore = defineStore({
       ]
     },
     newChoice: {
-      roomName: '',
+      roomName: null,
       date: null,
-      start: '',
-      end: '',
-      firstname: '',
-      lastname: ''
+      start: null,
+      end: null,
+      firstname: null,
+      lastname: null
     },
     selectedRoom: null,
     selectedDate: null,
@@ -39,12 +39,12 @@ export const useReservationsStore = defineStore({
   }),
   actions: {
     // Fetch reservations
-    async fetchReservations(selectedRoom, selectedDate) {
+    async fetchReservations(pickedRoom, pickedDate) {
       this.bookedSlots = []
       this.loading = true
       try {
         const response = await fetch(
-          `http://localhost:3330/api/reservations/${selectedRoom}/${selectedDate}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/reservations/${pickedRoom}/${pickedDate}`
         )
         if (!response.ok) {
           throw new Error('Failed to fetch reservations')
@@ -142,14 +142,14 @@ export const useReservationsStore = defineStore({
     // Create new reservation
     async postNewReservation() {
       this.error = false
-      const userDate = new Date(this.selectedDate)
-      const year = userDate.getFullYear()
-      const month = String(userDate.getMonth() + 1).padStart(2, '0')
-      const day = String(userDate.getDate()).padStart(2, '0')
-      const formattedDate = `${year}-${month}-${day}`
-      this.newChoice.date = formattedDate
+      // const userDate = new Date(this.selectedDate)
+      // const year = userDate.getFullYear()
+      // const month = String(userDate.getMonth() + 1).padStart(2, '0')
+      // const day = String(userDate.getDate()).padStart(2, '0')
+      // const formattedDate = `${year}-${month}-${day}`
+      // this.newChoice.date = formattedDate
       try {
-        const response = await fetch('http://localhost:3330/api/post-reservation', {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post-reservation`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

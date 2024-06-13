@@ -8,9 +8,8 @@ import RoomDesc from './RoomDesc.vue'
 
 const { rooms, loading } = storeToRefs(useRoomsStore())
 const { fetchRooms } = useRoomsStore()
-fetchRooms()
 const { newChoice, selectedRoom } = storeToRefs(useReservationsStore())
-const { fetchReservations } = useReservationsStore()
+// const { fetchReservations } = useReservationsStore()
 const activeRoom = ref(null)
 const buttonText = ref('Choisissez une salle')
 const props = defineProps({
@@ -20,6 +19,8 @@ const props = defineProps({
   }
 })
 
+// fetching existing rooms
+fetchRooms()
 // Manager for active room
 const setActiveRoom = (room) => {
   if (activeRoom.value === room) {
@@ -31,14 +32,21 @@ const setActiveRoom = (room) => {
 
 // Manager for room states
 const handleRoomSelection = (roomName) => {
-  newChoice.value.roomName = roomName
-  selectedRoom.value = roomName
+  const previousRoom = roomName
+
+  if (typeof newChoice.value.roomName === 'string' && newChoice.value.roomName == previousRoom) {
+    newChoice.value.roomName = null
+    selectedRoom.value = null
+  } else {
+    newChoice.value.roomName = roomName
+    selectedRoom.value = roomName
+  }
 }
 
 watch(selectedRoom, (newValue) => {
   if (newValue) {
     buttonText.value = 'Choisir un créneau'
-    fetchReservations(newValue, newChoice.value.date)
+    // fetchReservations(newValue, newChoice.value.date)
   }
 })
 </script>
@@ -65,7 +73,7 @@ watch(selectedRoom, (newValue) => {
       <RoomDesc v-if="activeRoom" :room="activeRoom" />
     </div>
     <button
-      :disabled="!selectedRoom"
+      :disabled="!newChoice.roomName"
       type="button"
       class="guideMessage"
       @click="props.navigateToSlotView"
@@ -90,7 +98,7 @@ watch(selectedRoom, (newValue) => {
 #roomSelection h1 {
   max-width: 70%;
   margin-bottom: calc(var(--margin) * 3);
-  font-family: Viga, sans-serif;
+  font-family: var(--header-font);
   font-size: var(--header-size);
   font-weight: 600;
   line-height: 1.3;

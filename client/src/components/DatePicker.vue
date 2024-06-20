@@ -1,12 +1,14 @@
 <template>
   <main id="timeSlotSelection">
     <NavHeader />
-    <h2>Choisissez une date ici</h2>
+    <h2>Choisissez une date</h2>
     <VueDatePicker
       v-model="pickedDate"
-      @update:modelValue="handleDateChange"
+      @update:model-value="handleDateChange(pickedDate)"
       :enable-time-picker="false"
-      class="vueDatePicker"
+      required
+      disable-year-select
+      class="vueDatePicker dp__theme_light"
     ></VueDatePicker>
     <p v-if="pickedDate && isPassedDate(pickedDate)" class="alertMessage">
       La date {{ displayDate }} est déjà passée. Veuillez choisir une date future.
@@ -15,7 +17,7 @@
 
     <p v-if="loading">Attendez nous vérifions les créneaux disponibles...</p>
     <TimeSlots
-      v-if="(pickedDate && !isPassedDate(pickedDate)) || (reservation.date && reservation.roomName)"
+      v-if="pickedDate && !isPassedDate(pickedDate)"
       :timeSlots="timeSlots"
       :isPassedDate="isPassedDate"
     />
@@ -82,7 +84,7 @@ const handleDateChange = (date) => {
 // Transforming "2024/06/06" in "6 june 2024"
 const formatDisplayDate = (date) => {
   if (!date) {
-    return 'Choisissez la date de réservation souhaitée'
+    return
   } else {
     const chosedDate = new Date(date)
     const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
@@ -135,9 +137,10 @@ watch(
 }
 
 .vueDatePicker {
-  width: 83%;
+  width: 80%;
   margin-bottom: 2rem;
 }
+
 .alertMessage {
   width: 83%;
   margin-bottom: 1rem;

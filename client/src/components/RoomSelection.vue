@@ -33,7 +33,7 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useRoomsStore } from '@/stores/RoomsStore'
-import { ref, defineProps, watch } from 'vue'
+import { ref, defineProps } from 'vue'
 import { useReservationsStore } from '@/stores/ReservationsStore'
 import RoomButton from './RoomButton.vue'
 import RoomDesc from './RoomDesc.vue'
@@ -77,14 +77,6 @@ const handleRoomSelection = (roomName) => {
     buttonText.value = 'Choisir un créneau'
   }
 }
-
-// watch(reservation.value.roomName, (newValue) => {
-//   if (typeof newValue === 'string') {
-//     buttonText.value = 'Choisir un créneau'
-//   } else {
-//     buttonText.value = 'Choisissez une salle'
-//   }
-// })
 </script>
 
 <style scoped>

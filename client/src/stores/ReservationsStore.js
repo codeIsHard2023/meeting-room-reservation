@@ -31,8 +31,6 @@ export const useReservationsStore = defineStore({
       firstname: null,
       lastname: null
     },
-    selectedRoom: null,
-    selectedDate: null,
     bookedSlots: [],
     loading: false,
     error: null
@@ -68,7 +66,7 @@ export const useReservationsStore = defineStore({
       const today = new Date()
       const todayWithoutTime = new Date(today.getFullYear(), today.getMonth(), today.getDate())
 
-      if (this.selectedDate < todayWithoutTime) {
+      if (this.reservation.date < todayWithoutTime) {
         morningSlots.forEach((slot) => {
           slot.booked = true
         })

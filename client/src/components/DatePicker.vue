@@ -7,7 +7,7 @@ import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import TimeSlots from './TimeSlots.vue'
 
-const { timeSlots, reservation, selectedDate, loading } = storeToRefs(useReservationsStore())
+const { timeSlots, reservation, loading } = storeToRefs(useReservationsStore())
 const { resetTimeSlots, fetchReservations } = useReservationsStore()
 
 const buttonText = ref('Choisissez le début et la fin de créneau')
@@ -34,12 +34,11 @@ const isPassedDate = (pickedDate) => {
 }
 // Here we set new selected date
 const handleDateChange = (date) => {
-  selectedDate.value = formattedDate(date)
   reservation.value.date = formattedDate(date)
   reservation.value.start = null
   reservation.value.end = null
 
-  if (reservation.value.date && reservation.value.date) {
+  if (reservation.value.date) {
     // ResetTimeSlots function reset timeSlots to default booked state
     resetTimeSlots()
 

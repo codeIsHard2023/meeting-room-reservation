@@ -8,7 +8,7 @@ import RoomDesc from './RoomDesc.vue'
 
 const { rooms, loading } = storeToRefs(useRoomsStore())
 const { fetchRooms } = useRoomsStore()
-const { reservation, selectedRoom } = storeToRefs(useReservationsStore())
+const { reservation } = storeToRefs(useReservationsStore())
 // const { fetchReservations } = useReservationsStore()
 const activeRoom = ref(null)
 const buttonText = ref('Choisissez une salle')
@@ -39,14 +39,12 @@ const handleRoomSelection = (roomName) => {
     reservation.value.roomName == previousRoom
   ) {
     reservation.value.roomName = null
-    selectedRoom.value = null
   } else {
     reservation.value.roomName = roomName
-    selectedRoom.value = roomName
   }
 }
 
-watch(selectedRoom, (newValue) => {
+watch(reservation.value.roomName, (newValue) => {
   if (newValue) {
     buttonText.value = 'Choisir un créneau'
     // fetchReservations(newValue, reservation.value.date)

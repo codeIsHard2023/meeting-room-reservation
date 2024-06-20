@@ -75,21 +75,21 @@ const create = (req, res, next) => {
     );
 
     // Here we read reservations.json
-    fs.readFile(newDataPathFile, "utf-8", (readingErr, data) => {
+    fs.readFile(newDataPathFile, "utf-8", (readingErr, reservations) => {
       if (readingErr) {
         console.error(
-          "Reading error from reservatoins.json file: ",
+          "Reading error from reservations.json file: ",
           readingErr
         );
         return res
           .status(500)
-          .json({ error: "Reading error from reservatoins.json file" });
+          .json({ error: "Reading error from reservations.json file" });
       }
 
       // Here we add new reservation into reservations.json
       try {
         // Here data of reservations.json are parsed
-        const jsonData = JSON.parse(data);
+        const jsonData = JSON.parse(reservations);
 
         // Here new id created for a new reservation
         const newId = jsonData.reservations.length + 1;

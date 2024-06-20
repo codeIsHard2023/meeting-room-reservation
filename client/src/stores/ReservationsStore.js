@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import supabase from '@/config/supabaseClient'
 
 export const useReservationsStore = defineStore({
   id: 'ReservationsStore',
@@ -142,12 +143,6 @@ export const useReservationsStore = defineStore({
     // Create new reservation
     async postNewReservation() {
       this.error = false
-      // const userDate = new Date(this.selectedDate)
-      // const year = userDate.getFullYear()
-      // const month = String(userDate.getMonth() + 1).padStart(2, '0')
-      // const day = String(userDate.getDate()).padStart(2, '0')
-      // const formattedDate = `${year}-${month}-${day}`
-      // this.newChoice.date = formattedDate
       try {
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post-reservation`, {
           method: 'POST',
@@ -156,8 +151,9 @@ export const useReservationsStore = defineStore({
           },
           body: JSON.stringify(this.newChoice)
         })
+        const { error } = await supabase.from('reservations').insert(this.newChoice)
 
-        if (response.ok) {
+        if (response.ok && !error) {
           console.log('Réservation créée avec succès')
         } else {
           console.error('Échec de la création de la réservation')

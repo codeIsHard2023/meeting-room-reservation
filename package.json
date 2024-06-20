@@ -26,6 +26,7 @@
     "lint-staged": "^13.2.3"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.43.5",
     "@vuepic/vue-datepicker": "^8.4.0",
     "axios": "^1.6.7",
     "eslint": "^9.0.0",

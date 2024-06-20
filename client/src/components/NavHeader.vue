@@ -10,7 +10,9 @@
         }
       "
     />
-    <router-link to="/"><img :src="homeIcon" alt="click to go home" /></router-link>
+    <router-link to="/"
+      ><img :src="homeIcon" alt="click to go home" @click="resetReservationStates()"
+    /></router-link>
   </header>
 </template>
 
@@ -27,11 +29,21 @@ const { fetchReservations } = useReservationsStore()
 const router = useRouter()
 const currentRoute = router.currentRoute.value.fullPath
 
+const resetReservationStates = () => {
+  for (const key in reservation.value) {
+    reservation.value[key] = null
+  }
+}
+
 const navigateToPreviousView = () => {
   if (currentRoute === '/slot') {
     router.push('/')
+    resetReservationStates()
   } else {
     router.push('/slot')
+    reservation.value.date = null
+    reservation.value.start = null
+    reservation.value.end = null
   }
 }
 

@@ -71,17 +71,20 @@ const handleRoomSelection = (roomName) => {
     reservation.value.roomName == previousRoom
   ) {
     reservation.value.roomName = null
+    buttonText.value = 'Choisissez une salle'
   } else {
     reservation.value.roomName = roomName
+    buttonText.value = 'Choisir un créneau'
   }
 }
 
-watch(reservation.value.roomName, (newValue) => {
-  if (newValue) {
-    buttonText.value = 'Choisir un créneau'
-    // fetchReservations(newValue, reservation.value.date)
-  }
-})
+// watch(reservation.value.roomName, (newValue) => {
+//   if (typeof newValue === 'string') {
+//     buttonText.value = 'Choisir un créneau'
+//   } else {
+//     buttonText.value = 'Choisissez une salle'
+//   }
+// })
 </script>
 
 <style scoped>

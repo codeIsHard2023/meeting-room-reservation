@@ -1,12 +1,12 @@
-<script setup>
-import ConfirmationForm from '../components/ConfirmationForm.vue'
-</script>
-
 <template>
   <div id="formContainer">
     <ConfirmationForm />
   </div>
 </template>
+
+<script setup>
+import ConfirmationForm from '../components/ConfirmationForm.vue'
+</script>
 
 <style scoped>
 #formContainer {

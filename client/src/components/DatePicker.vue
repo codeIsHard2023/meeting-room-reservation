@@ -1,3 +1,35 @@
+<template>
+  <main id="timeSlotSelection">
+    <NavHeader />
+    <h2>Choisissez une date ici</h2>
+    <VueDatePicker
+      v-model="pickedDate"
+      @update:modelValue="handleDateChange"
+      :enable-time-picker="false"
+      class="vueDatePicker"
+    ></VueDatePicker>
+    <p v-if="pickedDate && isPassedDate(pickedDate)" class="alertMessage">
+      La date {{ displayDate }} est déjà passée. Veuillez choisir une date future.
+    </p>
+    <p v-else-if="reservation.date">Vous avez choisie le {{ displayDate }}</p>
+
+    <p v-if="loading">Attendez nous vérifions les créneaux disponibles...</p>
+    <TimeSlots
+      v-if="(pickedDate && !isPassedDate(pickedDate)) || (reservation.date && reservation.roomName)"
+      :timeSlots="timeSlots"
+      :isPassedDate="isPassedDate"
+    />
+    <button
+      :disabled="isPassedDate && !reservation.start && !reservation.end"
+      type="button"
+      class="validateSlot"
+      @click="navigateToBookingView"
+    >
+      {{ buttonText }}
+    </button>
+  </main>
+</template>
+
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useReservationsStore } from '@/stores/ReservationsStore'
@@ -88,38 +120,6 @@ watch(
   }
 )
 </script>
-
-<template>
-  <main id="timeSlotSelection">
-    <NavHeader />
-    <h2>Choisissez une date ici</h2>
-    <VueDatePicker
-      v-model="pickedDate"
-      @update:modelValue="handleDateChange"
-      :enable-time-picker="false"
-      class="vueDatePicker"
-    ></VueDatePicker>
-    <p v-if="pickedDate && isPassedDate(pickedDate)" class="alertMessage">
-      La date {{ displayDate }} est déjà passée. Veuillez choisir une date future.
-    </p>
-    <p v-else-if="reservation.date">Vous avez choisie le {{ displayDate }}</p>
-
-    <p v-if="loading">Attendez nous vérifions les créneaux disponibles...</p>
-    <TimeSlots
-      v-if="(pickedDate && !isPassedDate(pickedDate)) || (reservation.date && reservation.roomName)"
-      :timeSlots="timeSlots"
-      :isPassedDate="isPassedDate"
-    />
-    <button
-      :disabled="isPassedDate && !reservation.start && !reservation.end"
-      type="button"
-      class="validateSlot"
-      @click="navigateToBookingView"
-    >
-      {{ buttonText }}
-    </button>
-  </main>
-</template>
 
 <style scoped>
 #timeSlotSelection {

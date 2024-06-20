@@ -1,9 +1,3 @@
-<script setup>
-import { defineProps } from 'vue'
-
-const props = defineProps(['room'])
-</script>
-
 <template>
   <h2 class="titleRoom">Salle choisie : {{ room.name }}</h2>
   <div class="roomCharacteristics">
@@ -26,6 +20,12 @@ const props = defineProps(['room'])
     </div>
   </div>
 </template>
+
+<script setup>
+import { defineProps } from 'vue'
+
+const props = defineProps(['room'])
+</script>
 
 <style scoped>
 .titleRoom {

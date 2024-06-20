@@ -1,3 +1,35 @@
+<template>
+  <main id="roomSelection">
+    <h1>Salles de réunion disponibles</h1>
+    <p v-if="loading">Chargement...</p>
+    <div class="roomContainer">
+      <div v-if="rooms">
+        <div class="rooms">
+          <RoomButton
+            :room="room"
+            v-for="room in rooms"
+            :key="room.name"
+            :isActive="activeRoom === room"
+            @activate="setActiveRoom(room)"
+            @click="handleRoomSelection(room.name)"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="info">
+      <RoomDesc v-if="activeRoom" :room="activeRoom" />
+    </div>
+    <button
+      :disabled="!reservation.roomName"
+      type="button"
+      class="guideMessage"
+      @click="props.navigateToSlotView"
+    >
+      {{ buttonText }}
+    </button>
+  </main>
+</template>
+
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useRoomsStore } from '@/stores/RoomsStore'
@@ -51,38 +83,6 @@ watch(reservation.value.roomName, (newValue) => {
   }
 })
 </script>
-
-<template>
-  <main id="roomSelection">
-    <h1>Salles de réunion disponibles</h1>
-    <p v-if="loading">Chargement...</p>
-    <div class="roomContainer">
-      <div v-if="rooms">
-        <div class="rooms">
-          <RoomButton
-            :room="room"
-            v-for="room in rooms"
-            :key="room.name"
-            :isActive="activeRoom === room"
-            @activate="setActiveRoom(room)"
-            @click="handleRoomSelection(room.name)"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="info">
-      <RoomDesc v-if="activeRoom" :room="activeRoom" />
-    </div>
-    <button
-      :disabled="!reservation.roomName"
-      type="button"
-      class="guideMessage"
-      @click="props.navigateToSlotView"
-    >
-      {{ buttonText }}
-    </button>
-  </main>
-</template>
 
 <style scoped>
 #roomSelection {

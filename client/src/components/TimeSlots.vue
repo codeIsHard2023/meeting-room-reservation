@@ -1,3 +1,44 @@
+<template>
+  <div class="slotsContainer">
+    <div class="timeSlots">
+      <h2>Matin</h2>
+      <div
+        v-for="(slot, index) in props.timeSlots.am"
+        :key="slot.start"
+        class="slot"
+        :class="{
+          booked: slot.booked,
+          selected: selectedSlot === slot,
+          firstSelected: isFirstSelected(slot),
+          lastSelected: isLastSelected(slot),
+          bothSelected: isBothSelected(slot)
+        }"
+        @click="handleSlotSelect(slot)"
+      >
+        {{ slot.start }} - {{ slot.end }}
+      </div>
+    </div>
+    <div class="timeSlots">
+      <h2>Après-midi</h2>
+      <div
+        v-for="(slot, index) in props.timeSlots.pm"
+        :key="slot.start"
+        class="slot"
+        :class="{
+          booked: slot.booked,
+          selected: selectedSlot === slot,
+          firstSelected: isFirstSelected(slot),
+          lastSelected: isLastSelected(slot),
+          bothSelected: isBothSelected(slot)
+        }"
+        @click="handleSlotSelect(slot)"
+      >
+        {{ slot.start }} - {{ slot.end }}
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
@@ -57,47 +98,6 @@ const updateReservation = () => {
   }
 }
 </script>
-
-<template>
-  <div class="slotsContainer">
-    <div class="timeSlots">
-      <h2>Matin</h2>
-      <div
-        v-for="(slot, index) in props.timeSlots.am"
-        :key="slot.start"
-        class="slot"
-        :class="{
-          booked: slot.booked,
-          selected: selectedSlot === slot,
-          firstSelected: isFirstSelected(slot),
-          lastSelected: isLastSelected(slot),
-          bothSelected: isBothSelected(slot)
-        }"
-        @click="handleSlotSelect(slot)"
-      >
-        {{ slot.start }} - {{ slot.end }}
-      </div>
-    </div>
-    <div class="timeSlots">
-      <h2>Après-midi</h2>
-      <div
-        v-for="(slot, index) in props.timeSlots.pm"
-        :key="slot.start"
-        class="slot"
-        :class="{
-          booked: slot.booked,
-          selected: selectedSlot === slot,
-          firstSelected: isFirstSelected(slot),
-          lastSelected: isLastSelected(slot),
-          bothSelected: isBothSelected(slot)
-        }"
-        @click="handleSlotSelect(slot)"
-      >
-        {{ slot.start }} - {{ slot.end }}
-      </div>
-    </div>
-  </div>
-</template>
 
 <style scoped>
 .slotsContainer {

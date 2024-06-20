@@ -9,13 +9,12 @@ const reservationControllers = require("../controllers/reservationControllers");
 
 /* ************* Routes definitions ************* */
 
-router.get("/check-status-router", roomControllers.testBrowse);
 router.get("/rooms", roomControllers.read);
-router.get("/reservations", reservationControllers.readReservations);
 router.get(
   "/reservations/:room/:date",
   reservationControllers.findReservations
 );
 router.post("/post-reservation", reservationControllers.create);
+router.get("/reservations", reservationControllers.readReservations); // unused
 /* ************************************************ */
 module.exports = router;

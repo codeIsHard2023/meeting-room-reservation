@@ -1,58 +1,9 @@
-<script setup>
-import { storeToRefs } from 'pinia'
-import { useReservationsStore } from '@/stores/ReservationsStore'
-import { ref } from 'vue'
-import NavHeader from './NavHeader.vue'
-
-const { newChoice, error } = storeToRefs(useReservationsStore())
-const { postNewReservation, fetchReservations } = useReservationsStore()
-const firstname = ref('')
-const lastname = ref('')
-const succesMessage = ref('')
-const messageOpacity = ref(0)
-
-const dateString = newChoice.value.date
-const formatDate = (dateString) => {
-  const date = new Date(dateString)
-  const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
-  return new Intl.DateTimeFormat('fr-FR', options).format(date)
-}
-const displayDate = formatDate(dateString)
-
-const handleFirstnameChange = (event) => {
-  firstname.value = event.target.value
-  newChoice.value.firstname = firstname.value
-}
-
-const handleLastnameChange = (event) => {
-  lastname.value = event.target.value
-  newChoice.value.lastname = lastname.value
-}
-
-const handleSubmitReservation = async (event) => {
-  event.preventDefault()
-  try {
-    await postNewReservation()
-    succesMessage.value = 'Votre réservation est enregistrée'
-    messageOpacity.value = 1
-    if (error.value) {
-      succesMessage.value =
-        'Il y a eu une erreur lors de la soumission. Veuillez vérifier vos choix : le nom de la salle, la date et les créneaux horaires.'
-      messageOpacity.value = 1
-    }
-    await fetchReservations()
-  } catch (err) {
-    console.error(err)
-  }
-}
-</script>
-
 <template>
   <NavHeader />
   <form @submit.prevent="handleSubmitReservation" class="reservationForm">
     <h2>Vos Informations</h2>
-    <span>{{ newChoice.roomName }}</span>
-    <span> {{ displayDate }} de {{ newChoice.start }} à {{ newChoice.end }}</span>
+    <span>{{ reservation.roomName }}</span>
+    <span> {{ displayDate }} de {{ reservation.start }} à {{ reservation.end }}</span>
     <label for="firstname">Prénom</label>
     <input
       v-model="firstname"
@@ -75,6 +26,55 @@ const handleSubmitReservation = async (event) => {
     <button type="submit" class="bookButton">Réserver la salle</button>
   </form>
 </template>
+
+<script setup>
+import { storeToRefs } from 'pinia'
+import { useReservationsStore } from '@/stores/ReservationsStore'
+import { ref } from 'vue'
+import NavHeader from './NavHeader.vue'
+
+const { reservation, error } = storeToRefs(useReservationsStore())
+const { postNewReservation } = useReservationsStore()
+const firstname = ref('')
+const lastname = ref('')
+const succesMessage = ref('')
+const messageOpacity = ref(0)
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
+  return new Intl.DateTimeFormat('fr-FR', options).format(date)
+}
+
+const dateString = reservation.value.date
+const displayDate = formatDate(dateString)
+
+const handleFirstnameChange = (event) => {
+  firstname.value = event.target.value
+  reservation.value.firstname = firstname.value
+}
+
+const handleLastnameChange = (event) => {
+  lastname.value = event.target.value
+  reservation.value.lastname = lastname.value
+}
+
+const handleSubmitReservation = async (event) => {
+  event.preventDefault()
+  try {
+    await postNewReservation()
+    succesMessage.value = 'Votre réservation est enregistrée'
+    messageOpacity.value = 1
+    if (error.value) {
+      succesMessage.value =
+        'Il y a eu une erreur lors de la soumission. Veuillez vérifier vos choix : le nom de la salle, la date et les créneaux horaires.'
+      messageOpacity.value = 1
+    }
+  } catch (err) {
+    console.error(err)
+  }
+}
+</script>
 
 <style scoped>
 .reservationForm {

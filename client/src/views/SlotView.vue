@@ -1,3 +1,7 @@
+<template>
+  <DatePicker :navigateToBookingView="navigateToBookingView" />
+</template>
+
 <script setup>
 import { useRouter } from 'vue-router'
 
@@ -8,6 +12,3 @@ const navigateToBookingView = () => {
 }
 import DatePicker from '@/components/DatePicker.vue'
 </script>
-<template>
-  <DatePicker :navigateToBookingView="navigateToBookingView" />
-</template>

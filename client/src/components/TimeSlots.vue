@@ -1,63 +1,3 @@
-<script setup>
-import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useReservationsStore } from '@/stores/ReservationsStore'
-
-// Test props in vue 3
-const props = defineProps(['timeSlots', 'isPassedDate'])
-const { newChoice } = storeToRefs(useReservationsStore())
-const selectedSlots = ref([])
-
-// Called when time slot selected or unselected
-const handleSlotSelect = (slot) => {
-  if (!slot.booked) {
-    const index = selectedSlots.value.findIndex((s) => s.start === slot.start && s.end === slot.end)
-    if (index === -1) {
-      // Slot is not selected, select it
-      selectedSlots.value.push(slot)
-    } else {
-      // Slot is already selected, deselect it
-      selectedSlots.value.splice(index, 1)
-    }
-    updateNewChoice()
-  }
-}
-
-// Checks if time slot is a first selected
-const isFirstSelected = (slot) => {
-  return (
-    selectedSlots.value.length > 0 &&
-    selectedSlots.value[0].start === slot.start &&
-    selectedSlots.value[0].end === slot.end
-  )
-}
-
-// Checks if time slot is a last selected
-const isLastSelected = (slot) => {
-  return (
-    selectedSlots.value.length > 0 &&
-    selectedSlots.value[selectedSlots.value.length - 1].start === slot.start &&
-    selectedSlots.value[selectedSlots.value.length - 1].end === slot.end
-  )
-}
-
-// Checks if time slot includes selected slots
-const isBothSelected = (slot) => {
-  return selectedSlots.value.some((s) => s.start === slot.start && s.end === slot.end)
-}
-
-// Update values of start and end
-const updateNewChoice = () => {
-  if (selectedSlots.value.length === 0) {
-    newChoice.value.start = null
-    newChoice.value.end = null
-  } else {
-    newChoice.value.start = selectedSlots.value[0].start
-    newChoice.value.end = selectedSlots.value[selectedSlots.value.length - 1].end
-  }
-}
-</script>
-
 <template>
   <div class="slotsContainer">
     <div class="timeSlots">
@@ -98,6 +38,67 @@ const updateNewChoice = () => {
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useReservationsStore } from '@/stores/ReservationsStore'
+
+// Test props in vue 3
+const props = defineProps(['timeSlots', 'isPassedDate'])
+const { reservation } = storeToRefs(useReservationsStore())
+const selectedSlots = ref([])
+const selectedSlot = ref('')
+
+// Called when time slot selected or unselected
+const handleSlotSelect = (slot) => {
+  if (!slot.booked) {
+    const index = selectedSlots.value.findIndex((s) => s.start === slot.start && s.end === slot.end)
+    if (index === -1) {
+      // Slot is not selected, select it
+      selectedSlots.value.push(slot)
+    } else {
+      // Slot is already selected, deselect it
+      selectedSlots.value.splice(index, 1)
+    }
+    updateReservation()
+  }
+}
+
+// Checks if time slot is a first selected
+const isFirstSelected = (slot) => {
+  return (
+    selectedSlots.value.length > 0 &&
+    selectedSlots.value[0].start === slot.start &&
+    selectedSlots.value[0].end === slot.end
+  )
+}
+
+// Checks if time slot is a last selected
+const isLastSelected = (slot) => {
+  return (
+    selectedSlots.value.length > 0 &&
+    selectedSlots.value[selectedSlots.value.length - 1].start === slot.start &&
+    selectedSlots.value[selectedSlots.value.length - 1].end === slot.end
+  )
+}
+
+// Checks if time slot includes selected slots
+const isBothSelected = (slot) => {
+  return selectedSlots.value.some((s) => s.start === slot.start && s.end === slot.end)
+}
+
+// Update values of start and end
+const updateReservation = () => {
+  if (selectedSlots.value.length === 0) {
+    reservation.value.start = null
+    reservation.value.end = null
+  } else {
+    reservation.value.start = selectedSlots.value[0].start
+    reservation.value.end = selectedSlots.value[selectedSlots.value.length - 1].end
+  }
+}
+</script>
 
 <style scoped>
 .slotsContainer {

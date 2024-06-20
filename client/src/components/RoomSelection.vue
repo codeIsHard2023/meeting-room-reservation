@@ -1,14 +1,46 @@
+<template>
+  <main id="roomSelection">
+    <h1>Salles de réunion disponibles</h1>
+    <p v-if="loading">Chargement...</p>
+    <div class="roomContainer">
+      <div v-if="rooms">
+        <div class="rooms">
+          <RoomButton
+            :room="room"
+            v-for="room in rooms"
+            :key="room.name"
+            :isActive="activeRoom === room"
+            @activate="setActiveRoom(room)"
+            @click="handleRoomSelection(room.name)"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="info">
+      <RoomDesc v-if="activeRoom" :room="activeRoom" />
+    </div>
+    <button
+      :disabled="!reservation.roomName"
+      type="button"
+      class="guideMessage"
+      @click="props.navigateToSlotView"
+    >
+      {{ buttonText }}
+    </button>
+  </main>
+</template>
+
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useRoomsStore } from '@/stores/RoomsStore'
-import { ref, defineProps, watch } from 'vue'
+import { ref, defineProps } from 'vue'
 import { useReservationsStore } from '@/stores/ReservationsStore'
 import RoomButton from './RoomButton.vue'
 import RoomDesc from './RoomDesc.vue'
 
 const { rooms, loading } = storeToRefs(useRoomsStore())
 const { fetchRooms } = useRoomsStore()
-const { newChoice, selectedRoom } = storeToRefs(useReservationsStore())
+const { reservation } = storeToRefs(useReservationsStore())
 // const { fetchReservations } = useReservationsStore()
 const activeRoom = ref(null)
 const buttonText = ref('Choisissez une salle')
@@ -34,54 +66,18 @@ const setActiveRoom = (room) => {
 const handleRoomSelection = (roomName) => {
   const previousRoom = roomName
 
-  if (typeof newChoice.value.roomName === 'string' && newChoice.value.roomName == previousRoom) {
-    newChoice.value.roomName = null
-    selectedRoom.value = null
+  if (
+    typeof reservation.value.roomName === 'string' &&
+    reservation.value.roomName == previousRoom
+  ) {
+    reservation.value.roomName = null
+    buttonText.value = 'Choisissez une salle'
   } else {
-    newChoice.value.roomName = roomName
-    selectedRoom.value = roomName
+    reservation.value.roomName = roomName
+    buttonText.value = 'Choisir un créneau'
   }
 }
-
-watch(selectedRoom, (newValue) => {
-  if (newValue) {
-    buttonText.value = 'Choisir un créneau'
-    // fetchReservations(newValue, newChoice.value.date)
-  }
-})
 </script>
-
-<template>
-  <main id="roomSelection">
-    <h1>Salles de réunion disponibles</h1>
-    <p v-if="loading">Chargement...</p>
-    <div class="roomContainer">
-      <div v-if="rooms">
-        <div class="rooms">
-          <RoomButton
-            :room="room"
-            v-for="room in rooms"
-            :key="room.name"
-            :isActive="activeRoom === room"
-            @activate="setActiveRoom(room)"
-            @click="handleRoomSelection(room.name)"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="info">
-      <RoomDesc v-if="activeRoom" :room="activeRoom" />
-    </div>
-    <button
-      :disabled="!newChoice.roomName"
-      type="button"
-      class="guideMessage"
-      @click="props.navigateToSlotView"
-    >
-      {{ buttonText }}
-    </button>
-  </main>
-</template>
 
 <style scoped>
 #roomSelection {

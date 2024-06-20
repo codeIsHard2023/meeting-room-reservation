@@ -1,3 +1,10 @@
+<template>
+  <button type="button" class="selectionButton" :class="{ active: isActive }" @click="activate">
+    <img :src="`${$env.VITE_BACKEND_URL}${room.roomPhoto}`" :alt="room.name" class="roomImage" />
+    <span class="roomName">{{ room.name }}</span>
+  </button>
+</template>
+
 <script setup>
 import { defineEmits } from 'vue'
 
@@ -11,13 +18,6 @@ const activate = () => {
   emit('activate', room)
 }
 </script>
-
-<template>
-  <button type="button" class="selectionButton" :class="{ active: isActive }" @click="activate">
-    <img :src="`${$env.VITE_BACKEND_URL}${room.roomPhoto}`" :alt="room.name" class="roomImage" />
-    <span class="roomName">{{ room.name }}</span>
-  </button>
-</template>
 
 <style scoped>
 .selectionButton {

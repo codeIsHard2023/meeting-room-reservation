@@ -1,3 +1,7 @@
+<template>
+  <RoomSelection :navigateToSlotView="navigateToSlotView" />
+</template>
+
 <script setup>
 import { useRouter } from 'vue-router'
 import RoomSelection from '@/components/RoomSelection.vue'
@@ -8,6 +12,3 @@ const navigateToSlotView = () => {
   router.push('/slot')
 }
 </script>
-<template>
-  <RoomSelection :navigateToSlotView="navigateToSlotView" />
-</template>

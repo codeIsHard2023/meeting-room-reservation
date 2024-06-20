@@ -23,7 +23,7 @@ export const useReservationsStore = defineStore({
         { start: '16:30', end: '17:00', booked: false }
       ]
     },
-    newChoice: {
+    reservation: {
       roomName: null,
       date: null,
       start: null,
@@ -142,19 +142,13 @@ export const useReservationsStore = defineStore({
     // Create new reservation
     async postNewReservation() {
       this.error = false
-      // const userDate = new Date(this.selectedDate)
-      // const year = userDate.getFullYear()
-      // const month = String(userDate.getMonth() + 1).padStart(2, '0')
-      // const day = String(userDate.getDate()).padStart(2, '0')
-      // const formattedDate = `${year}-${month}-${day}`
-      // this.newChoice.date = formattedDate
       try {
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/post-reservation`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(this.newChoice)
+          body: JSON.stringify(this.reservation)
         })
 
         if (response.ok) {

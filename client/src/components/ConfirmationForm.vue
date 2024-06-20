@@ -4,14 +4,14 @@ import { useReservationsStore } from '@/stores/ReservationsStore'
 import { ref } from 'vue'
 import NavHeader from './NavHeader.vue'
 
-const { newChoice, error } = storeToRefs(useReservationsStore())
+const { reservation, error } = storeToRefs(useReservationsStore())
 const { postNewReservation, fetchReservations } = useReservationsStore()
 const firstname = ref('')
 const lastname = ref('')
 const succesMessage = ref('')
 const messageOpacity = ref(0)
 
-const dateString = newChoice.value.date
+const dateString = reservation.value.date
 const formatDate = (dateString) => {
   const date = new Date(dateString)
   const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
@@ -21,12 +21,12 @@ const displayDate = formatDate(dateString)
 
 const handleFirstnameChange = (event) => {
   firstname.value = event.target.value
-  newChoice.value.firstname = firstname.value
+  reservation.value.firstname = firstname.value
 }
 
 const handleLastnameChange = (event) => {
   lastname.value = event.target.value
-  newChoice.value.lastname = lastname.value
+  reservation.value.lastname = lastname.value
 }
 
 const handleSubmitReservation = async (event) => {
@@ -51,8 +51,8 @@ const handleSubmitReservation = async (event) => {
   <NavHeader />
   <form @submit.prevent="handleSubmitReservation" class="reservationForm">
     <h2>Vos Informations</h2>
-    <span>{{ newChoice.roomName }}</span>
-    <span> {{ displayDate }} de {{ newChoice.start }} à {{ newChoice.end }}</span>
+    <span>{{ reservation.roomName }}</span>
+    <span> {{ displayDate }} de {{ reservation.start }} à {{ reservation.end }}</span>
     <label for="firstname">Prénom</label>
     <input
       v-model="firstname"

@@ -5,7 +5,7 @@ import { useReservationsStore } from '@/stores/ReservationsStore'
 
 // Test props in vue 3
 const props = defineProps(['timeSlots', 'isPassedDate'])
-const { newChoice } = storeToRefs(useReservationsStore())
+const { reservation } = storeToRefs(useReservationsStore())
 const selectedSlots = ref([])
 
 // Called when time slot selected or unselected
@@ -19,7 +19,7 @@ const handleSlotSelect = (slot) => {
       // Slot is already selected, deselect it
       selectedSlots.value.splice(index, 1)
     }
-    updateNewChoice()
+    updateReservation()
   }
 }
 
@@ -47,13 +47,13 @@ const isBothSelected = (slot) => {
 }
 
 // Update values of start and end
-const updateNewChoice = () => {
+const updateReservation = () => {
   if (selectedSlots.value.length === 0) {
-    newChoice.value.start = null
-    newChoice.value.end = null
+    reservation.value.start = null
+    reservation.value.end = null
   } else {
-    newChoice.value.start = selectedSlots.value[0].start
-    newChoice.value.end = selectedSlots.value[selectedSlots.value.length - 1].end
+    reservation.value.start = selectedSlots.value[0].start
+    reservation.value.end = selectedSlots.value[selectedSlots.value.length - 1].end
   }
 }
 </script>

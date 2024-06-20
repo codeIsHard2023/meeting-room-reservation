@@ -1,26 +1,46 @@
+<template>
+  <header class="header">
+    <img
+      :src="chevronLeft"
+      alt="click to go back"
+      @click="
+        () => {
+          navigateToPreviousView()
+          isFormSubmission()
+        }
+      "
+    />
+    <router-link to="/"><img :src="homeIcon" alt="click to go home" /></router-link>
+  </header>
+</template>
+
 <script setup>
+import { storeToRefs } from 'pinia'
+import { useReservationsStore } from '@/stores/ReservationsStore'
 import { useRouter } from 'vue-router'
 import chevronLeft from '@/assets/icons/chevronLeft.svg'
 import homeIcon from '@/assets/icons/homeIcon.svg'
 
+const { reservation } = storeToRefs(useReservationsStore())
+const { fetchReservations } = useReservationsStore()
+
 const router = useRouter()
+const currentRoute = router.currentRoute.value.fullPath
 
 const navigateToPreviousView = () => {
-  const previousRoute = router.currentRoute.value.fullPath
-  if (previousRoute === '/slot') {
+  if (currentRoute === '/slot') {
     router.push('/')
   } else {
     router.push('/slot')
   }
 }
-</script>
 
-<template>
-  <header class="header">
-    <img :src="chevronLeft" alt="click to go back" @click="navigateToPreviousView" />
-    <router-link to="/"><img :src="homeIcon" alt="click to go home" /></router-link>
-  </header>
-</template>
+const isFormSubmission = () => {
+  if (currentRoute === '/booking') {
+    fetchReservations(reservation.value.roomName, reservation.value.date)
+  }
+}
+</script>
 
 <style scoped>
 .header {

@@ -25,7 +25,7 @@
       :disabled="isPassedDate && !reservation.start && !reservation.end"
       type="button"
       class="validateSlot"
-      @click="navigateToBookingView"
+      @click="props.navigateToBookingView"
     >
       {{ buttonText }}
     </button>
@@ -44,6 +44,7 @@ import TimeSlots from './TimeSlots.vue'
 const { timeSlots, reservation, loading } = storeToRefs(useReservationsStore())
 const { resetTimeSlots, fetchReservations } = useReservationsStore()
 
+const pickedDate = ref('')
 const buttonText = ref('Choisissez le début et la fin de créneau')
 const props = defineProps({
   navigateToBookingView: {
@@ -110,9 +111,9 @@ watch(
     () => reservation.value.start,
     () => reservation.value.end,
     () => reservation.value.date,
-    reservation.value.roomName
+    () => reservation.value.roomName
   ],
-  ([newStart, newEnd, newDate]) => {
+  ([newStart, newEnd, newDate, newRoomName]) => {
     if (newStart && newEnd && isPassedDate) {
       buttonText.value = 'Passer à la réservation'
     } else {

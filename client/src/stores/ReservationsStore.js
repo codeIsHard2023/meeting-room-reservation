@@ -62,55 +62,42 @@ export const useReservationsStore = defineStore({
       const morningSlots = this.timeSlots.am
       const afternoonSlots = this.timeSlots.pm
 
-      // Here we define today date
-      const today = new Date()
-      const todayWithoutTime = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+      return this.bookedSlots.forEach((slot) => {
+        const morgning = { startIndex: -1, endIndex: -1 }
+        const afternoon = { startIndex: -1, endIndex: -1 }
 
-      if (this.reservation.date < todayWithoutTime) {
-        morningSlots.forEach((slot) => {
-          slot.booked = true
-        })
-        afternoonSlots.forEach((slot) => {
-          slot.booked = true
-        })
-      } else {
-        return this.bookedSlots.forEach((slot) => {
-          const morgning = { startIndex: -1, endIndex: -1 }
-          const afternoon = { startIndex: -1, endIndex: -1 }
-
-          // Find time slot start and end
-          morningSlots.forEach((morningSlot, index) => {
-            if (slot.start === morningSlot.start) {
-              morgning.startIndex = index
-            }
-            if (slot.end === morningSlot.end) {
-              morgning.endIndex = index
-            }
-          })
-
-          afternoonSlots.forEach((afternoonSlot, index) => {
-            if (slot.start === afternoonSlot.start) {
-              afternoon.startIndex = index
-            }
-            if (slot.end === afternoonSlot.end) {
-              afternoon.endIndex = index
-            }
-          })
-
-          // Disable booked time slots
-          if (morgning.startIndex !== -1 && morgning.endIndex !== -1) {
-            for (let i = morgning.startIndex; i <= morgning.endIndex; i++) {
-              morningSlots[i].booked = true
-              morningSlots[i].active = false
-            }
-          } else if (afternoon.startIndex !== -1 && afternoon.endIndex !== -1) {
-            for (let i = afternoon.startIndex; i <= afternoon.endIndex; i++) {
-              afternoonSlots[i].booked = true
-              afternoonSlots[i].active = false
-            }
+        // Find time slot start and end
+        morningSlots.forEach((morningSlot, index) => {
+          if (slot.start === morningSlot.start) {
+            morgning.startIndex = index
+          }
+          if (slot.end === morningSlot.end) {
+            morgning.endIndex = index
           }
         })
-      }
+
+        afternoonSlots.forEach((afternoonSlot, index) => {
+          if (slot.start === afternoonSlot.start) {
+            afternoon.startIndex = index
+          }
+          if (slot.end === afternoonSlot.end) {
+            afternoon.endIndex = index
+          }
+        })
+
+        // Disable booked time slots
+        if (morgning.startIndex !== -1 && morgning.endIndex !== -1) {
+          for (let i = morgning.startIndex; i <= morgning.endIndex; i++) {
+            morningSlots[i].booked = true
+            morningSlots[i].active = false
+          }
+        } else if (afternoon.startIndex !== -1 && afternoon.endIndex !== -1) {
+          for (let i = afternoon.startIndex; i <= afternoon.endIndex; i++) {
+            afternoonSlots[i].booked = true
+            afternoonSlots[i].active = false
+          }
+        }
+      })
     },
 
     // Function used to reset timeslots booked value

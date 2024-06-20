@@ -48,6 +48,7 @@ import { useReservationsStore } from '@/stores/ReservationsStore'
 const props = defineProps(['timeSlots', 'isPassedDate'])
 const { reservation } = storeToRefs(useReservationsStore())
 const selectedSlots = ref([])
+const selectedSlot = ref('')
 
 // Called when time slot selected or unselected
 const handleSlotSelect = (slot) => {

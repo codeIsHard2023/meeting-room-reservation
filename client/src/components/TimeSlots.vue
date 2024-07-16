@@ -3,7 +3,7 @@
     <div class="timeSlots">
       <h2>Matin</h2>
       <div
-        v-for="(slot, index) in props.timeSlots.am"
+        v-for="(slot) in props.timeSlots.am"
         :key="slot.start"
         class="slot"
         :class="{
@@ -21,7 +21,7 @@
     <div class="timeSlots">
       <h2>Après-midi</h2>
       <div
-        v-for="(slot, index) in props.timeSlots.pm"
+        v-for="(slot) in props.timeSlots.pm"
         :key="slot.start"
         class="slot"
         :class="{

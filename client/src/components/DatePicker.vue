@@ -114,7 +114,7 @@ watch(
     () => reservation.value.roomName
   ],
   ([newStart, newEnd, newDate, newRoomName]) => {
-    if (newStart && newEnd && isPassedDate) {
+    if (newStart && newEnd && isPassedDate && newRoomName) {
       buttonText.value = 'Passer à la réservation'
     } else {
       buttonText.value = 'Choisissez le début et la fin du créneau'
@@ -143,6 +143,7 @@ watch(
 }
 
 .alertMessage {
+  text-align: center;
   width: 83%;
   margin-bottom: 1rem;
 }
